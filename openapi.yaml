@@ -9128,7 +9128,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -9461,7 +9463,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -9790,7 +9794,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -10124,7 +10130,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -10452,7 +10460,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -10784,7 +10794,9 @@ components:
           description: Stop generating further tokens when generated token corresponds
             to any of the tokens in the sequence.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -10969,7 +10981,9 @@ components:
             in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
             (e.g. `en`) format will improve accuracy and latency.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
             the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -11501,7 +11515,9 @@ components:
             the API will stop generation. The stop phrases are excluded from the result.
             Defaults to empty list.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -12443,7 +12459,9 @@ components:
             in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
             (e.g. `en`) format will improve accuracy and latency.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
             the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -12979,7 +12997,9 @@ components:
             the API will stop generation. The stop phrases are excluded from the result.
             Defaults to empty list.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -15789,7 +15809,9 @@ components:
             in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
             (e.g. `en`) format will improve accuracy and latency.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
             the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
@@ -16321,7 +16343,9 @@ components:
             the API will stop generation. The stop phrases are excluded from the result.
             Defaults to empty list.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
             each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
