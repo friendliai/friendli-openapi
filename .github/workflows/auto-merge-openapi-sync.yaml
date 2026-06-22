@@ -1,0 +1,40 @@
+name: Auto-merge OpenAPI sync PRs
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  validate-sync-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate sync PR metadata
+        run: |
+          if [ "${{ github.event.pull_request.user.login }}" != "friendli-bot" ]; then
+            echo "PR author must be friendli-bot"
+            exit 1
+          fi
+          if [[ ! "${{ github.head_ref }}" =~ ^migrate- ]]; then
+            echo "Branch must start with migrate-"
+            exit 1
+          fi
+          if [ "${{ github.event.pull_request.base.ref }}" != "main" ]; then
+            echo "Base branch must be main"
+            exit 1
+          fi
+          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+            echo "Fork PRs are not allowed"
+            exit 1
+          fi
+          echo "Valid sync PR"
+
+  auto-merge:
+    needs: validate-sync-pr
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge sync PR
+        run: gh pr merge "$PR_NUMBER" --squash --delete-branch --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
