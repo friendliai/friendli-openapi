@@ -6091,7 +6091,7 @@ paths:
       tags:
         - Cost
       summary: Get cost details for the team.
-      operationId: getCosts
+      operationId: getCost
       parameters:
         - name: start_time
           in: query
@@ -6188,12 +6188,12 @@ paths:
           description: Rate limit exceeded
         '422':
           description: Unprocessable Entity
-      x-speakeasy-name-override: getCosts
+      x-speakeasy-name-override: getCost
       x-mint:
         metadata:
-          title: Costs
-          sidebarTitle: Costs
-          og:title: Costs
+          title: Cost
+          sidebarTitle: Cost
+          og:title: Cost
           description: Get cost details for the team.
           og:description: Get cost details for the team.
         href: /openapi/administration/usage/cost
@@ -12236,6 +12236,8 @@ components:
         has_more:
           type: boolean
           title: Has More
+          examples:
+            - false
         next_page:
           anyOf:
             - type: string
@@ -12256,32 +12258,32 @@ components:
     CostResult:
       properties:
         total:
-          type: string
-          pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
+          type: number
+          format: double
           title: Total
           description: The numeric value of the cost. In USD.
           examples:
-            - '2.709083'
+            - 2.709083
         quantity:
           anyOf:
-            - type: string
-              pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
+            - type: number
             - type: 'null'
+          format: double
           title: Quantity
           description: When `group_by=line_item`, this field provides quantity of
             the line item.
           examples:
-            - '0.934167'
+            - 0.934167
         unit_price:
           anyOf:
-            - type: string
-              pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
+            - type: number
             - type: 'null'
+          format: double
           title: Unit Price
           description: When `group_by=line_item`, this field provides unit price of
             the line item in USD Cents.
           examples:
-            - '290.0'
+            - 290.0
         line_item:
           anyOf:
             - type: string
