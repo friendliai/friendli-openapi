@@ -15573,6 +15573,8 @@ components:
         - TPOT_MS
         - TTFT_MS
         - REQUEST_COUNT
+        - WORKSPACE_UTILIZATION
+        - QUEUED_PREFILL_TOKENS
       title: QueueBackpressureMetricKind
       description: Queue backpressure metric kind.
     ResponseFormat:
