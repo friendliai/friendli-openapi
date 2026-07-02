@@ -2761,6 +2761,7 @@ paths:
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: complete
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Model APIs Tool Assisted Chat Completions
@@ -2893,6 +2894,7 @@ paths:
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: stream
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Model APIs Tool Assisted Chat Stream Completions
@@ -14394,6 +14396,20 @@ components:
             - type: integer
             - type: 'null'
           title: Max Input Length
+        queue_timeout_ms:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Queue Timeout Ms
+        queue_backpressure_metric_kind:
+          anyOf:
+            - $ref: '#/components/schemas/QueueBackpressureMetricKind'
+            - type: 'null'
+        queue_backpressure_metric_threshold:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Queue Backpressure Metric Threshold
       type: object
       required:
         - tokenizer_skip_special_tokens
@@ -15551,6 +15567,14 @@ components:
           description: Cached tokens present in the prompt.
       type: object
       title: PromptTokensDetails
+    QueueBackpressureMetricKind:
+      type: string
+      enum:
+        - TPOT_MS
+        - TTFT_MS
+        - REQUEST_COUNT
+      title: QueueBackpressureMetricKind
+      description: Queue backpressure metric kind.
     ResponseFormat:
       oneOf:
         - $ref: '#/components/schemas/ResponseFormatJsonSchema'
