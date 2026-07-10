@@ -182,9 +182,9 @@ paths:
           - eventstream
       x-mint:
         metadata:
-          title: Model APIs Chat Stream Completions
+          title: Model APIs Stream Chat Completions
           sidebarTitle: Stream Chat Completions
-          og:title: Model APIs Chat Stream Completions
+          og:title: Model APIs Stream Chat Completions
           description: Generate a model response from a list of messages comprising
             a conversation. Compatible with the OpenAI Chat Completions API, with
             support for streaming, tool calls, and structured outputs.
@@ -430,9 +430,6 @@ paths:
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: stream
-      x-speakeasy-usage-example:
-        tags:
-          - eventstream
       x-mint:
         metadata:
           title: Model APIs Stream Responses
@@ -634,6 +631,161 @@ paths:
 
 
           </Info>'
+  /serverless/v1/messages#stream:
+    post:
+      tags:
+        - Serverless.Messages
+      summary: Stream messages
+      description: Generate a model response from a conversation using the Anthropic
+        Messages API format. Supports streaming, function tool calls, and extended
+        thinking.
+      operationId: serverlessMessagesStream
+      security:
+        - token: []
+      parameters:
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerlessMessagesStreamBody'
+      responses:
+        '200':
+          description: Successfully generated a streamed Messages-style response.
+          content:
+            text/event-stream:
+              examples:
+                Example:
+                  value: 'event: message_start
+
+                    data: {"type":"message_start","message":{"id":"msg_4b71d12c86d94e719c7e3984a7bb7941","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0,"cache_read_input_tokens":0}}}
+
+
+                    event: content_block_start
+
+                    data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":",
+                    how can I help?"}}
+
+
+                    event: content_block_stop
+
+                    data: {"type":"content_block_stop","index":0}
+
+
+                    event: message_delta
+
+                    data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":11}}
+
+
+                    event: message_stop
+
+                    data: {"type":"message_stop"}
+
+                    '
+              schema:
+                $ref: '#/components/schemas/ServerlessMessagesStreamSuccess'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              examples:
+                Invalid request error:
+                  value:
+                    type: error
+                    error:
+                      type: invalid_request_error
+                      message: '...'
+                    request_id: req_...
+              schema:
+                $ref: '#/components/schemas/MessagesErrorResponse'
+      x-speakeasy-name-override: stream
+      x-mint:
+        metadata:
+          title: Model APIs Stream Messages
+          sidebarTitle: Stream Messages
+          og:title: Model APIs Stream Messages
+          description: Generate a model response from a conversation using the Anthropic
+            Messages API format. Supports streaming, function tool calls, and extended
+            thinking.
+          og:description: Generate a model response from a conversation using the
+            Anthropic Messages API format. Supports streaming, function tool calls,
+            and extended thinking.
+          tag: Beta
+        content: 'Generate a model response from a conversation using the Anthropic
+          Messages API format. Supports streaming, function tool calls, and extended
+          thinking.
+
+
+          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+
+
+          <Note>
+
+          The Messages API may not be supported by all models available on Model APIs.
+
+          </Note>
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          When streaming mode is used (i.e., `stream` option is set to `true`), the
+          response is in MIME type `text/event-stream`. Otherwise, the content type
+          is `application/json`.
+
+          You can view the schema of the streamed sequence of chunk objects in streaming
+          mode [here](/openapi/model-apis/messages-chunk-object).
+
+
+          <Warning>Server-side tools are not supported in the Messages API. In `tools`,
+          only custom/client function tools are used; non-`custom` tool types are
+          ignored.</Warning>
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
   /serverless/v1/chat/render:
     post:
       tags:
@@ -733,7 +885,7 @@ paths:
               $ref: '#/components/schemas/ServerlessCompletionsBody'
       responses:
         '200':
-          description: Successfully generated completions.
+          description: Successfully generated a completion response.
           content:
             application/json:
               schema:
@@ -827,7 +979,7 @@ paths:
               $ref: '#/components/schemas/ServerlessCompletionsStreamBody'
       responses:
         '200':
-          description: Successfully generated a chat response.
+          description: Successfully generated a completion response.
           content:
             text/event-stream:
               x-speakeasy-sse-sentinel: '[DONE]'
@@ -1034,9 +1186,9 @@ paths:
       x-speakeasy-name-override: stream
       x-mint:
         metadata:
-          title: Model APIs Audio Transcriptions (Stream)
+          title: Model APIs Stream Audio Transcriptions
           sidebarTitle: Stream Audio Transcriptions
-          og:title: Model APIs Audio Transcriptions (Stream)
+          og:title: Model APIs Stream Audio Transcriptions
           description: Transcribe an audio file into text.
           og:description: Transcribe an audio file into text.
         content: 'Transcribe an audio file into text.
@@ -1385,9 +1537,9 @@ paths:
       x-speakeasy-ignore: true
       x-mint:
         metadata:
-          title: Model APIs Tool Assisted Chat Stream Completions
+          title: Model APIs Tool Assisted Stream Chat Completions
           sidebarTitle: Stream Tool Assisted Chat Completions
-          og:title: Model APIs Tool Assisted Chat Stream Completions
+          og:title: Model APIs Tool Assisted Stream Chat Completions
           description: Generate a model response from a list of messages comprising
             a conversation. Compatible with the OpenAI Chat Completions API, with
             support for streaming, tool calls, and structured outputs. Additionally,
@@ -1600,9 +1752,9 @@ paths:
       x-speakeasy-name-override: stream
       x-mint:
         metadata:
-          title: Dedicated Chat Stream Completions
+          title: Dedicated Stream Chat Completions
           sidebarTitle: Stream Chat Completions
-          og:title: Dedicated Chat Stream Completions
+          og:title: Dedicated Stream Chat Completions
           description: Generate a model response from a list of messages comprising
             a conversation. Compatible with the OpenAI Chat Completions API, with
             support for streaming, tool calls, and structured outputs.
@@ -2074,6 +2226,152 @@ paths:
 
 
           </Info>'
+  /dedicated/v1/messages#stream:
+    post:
+      tags:
+        - Dedicated.Messages
+      summary: Stream messages
+      description: Generate a model response from a conversation using the Anthropic
+        Messages API format. Supports streaming, function tool calls, and extended
+        thinking.
+      operationId: dedicatedMessagesStream
+      security:
+        - token: []
+      parameters:
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DedicatedMessagesStreamBody'
+      responses:
+        '200':
+          description: Successfully generated a streamed Messages-style response.
+          content:
+            text/event-stream:
+              examples:
+                Example:
+                  value: 'event: message_start
+
+                    data: {"type":"message_start","message":{"id":"msg_4b71d12c86d94e719c7e3984a7bb7941","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0,"cache_read_input_tokens":0}}}
+
+
+                    event: content_block_start
+
+                    data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":",
+                    how can I help?"}}
+
+
+                    event: content_block_stop
+
+                    data: {"type":"content_block_stop","index":0}
+
+
+                    event: message_delta
+
+                    data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":11}}
+
+
+                    event: message_stop
+
+                    data: {"type":"message_stop"}
+
+                    '
+              schema:
+                $ref: '#/components/schemas/DedicatedMessagesStreamSuccess'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              examples:
+                Invalid request error:
+                  value:
+                    type: error
+                    error:
+                      type: invalid_request_error
+                      message: '...'
+                    request_id: req_...
+              schema:
+                $ref: '#/components/schemas/MessagesErrorResponse'
+      x-speakeasy-name-override: stream
+      x-mint:
+        metadata:
+          title: Dedicated Stream Messages
+          sidebarTitle: Stream Messages
+          og:title: Dedicated Stream Messages
+          description: Generate a model response from a conversation using the Anthropic
+            Messages API format. Supports streaming, function tool calls, and extended
+            thinking.
+          og:description: Generate a model response from a conversation using the
+            Anthropic Messages API format. Supports streaming, function tool calls,
+            and extended thinking.
+          tag: Beta
+        href: /openapi/dedicated/inference/messages
+        content: 'Generate a model response from a conversation using the Anthropic
+          Messages API format. Supports streaming, function tool calls, and extended
+          thinking.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          When streaming mode is used (i.e., `stream` option is set to `true`), the
+          response is in MIME type `text/event-stream`. Otherwise, the content type
+          is `application/json`.
+
+          You can view the schema of the streamed sequence of chunk objects in streaming
+          mode [here](/openapi/dedicated/inference/messages-chunk-object).
+
+
+          <Warning>Server-side tools are not supported in the Messages API. In `tools`,
+          only custom/client function tools are used; non-`custom` tool types are
+          ignored.</Warning>
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
   /dedicated/v1/completions:
     post:
       tags:
@@ -2103,7 +2401,7 @@ paths:
               $ref: '#/components/schemas/DedicatedCompletionsBody'
       responses:
         '200':
-          description: Successfully generated completions.
+          description: Successfully generated a completion response.
           content:
             application/json:
               schema:
@@ -2190,7 +2488,7 @@ paths:
               $ref: '#/components/schemas/DedicatedCompletionsStreamBody'
       responses:
         '200':
-          description: Successfully generated a chat response.
+          description: Successfully generated a completion response.
           content:
             text/event-stream:
               x-speakeasy-sse-sentinel: '[DONE]'
@@ -2684,9 +2982,9 @@ paths:
       x-speakeasy-name-override: stream
       x-mint:
         metadata:
-          title: Dedicated Audio Transcriptions (Stream)
+          title: Dedicated Stream Audio Transcriptions
           sidebarTitle: Stream Audio Transcriptions
-          og:title: Dedicated Audio Transcriptions (Stream)
+          og:title: Dedicated Stream Audio Transcriptions
           description: Transcribe an audio file into text.
           og:description: Transcribe an audio file into text.
         content: 'Transcribe an audio file into text.
@@ -2888,9 +3186,9 @@ paths:
       x-speakeasy-name-override: stream
       x-mint:
         metadata:
-          title: Container Chat Stream Completions
+          title: Container Stream Chat Completions
           sidebarTitle: Stream Chat Completions
-          og:title: Container Chat Stream Completions
+          og:title: Container Stream Chat Completions
           description: Generate a model response from a list of messages comprising
             a conversation. Compatible with the OpenAI Chat Completions API, with
             support for streaming, tool calls, and structured outputs.
@@ -3231,6 +3529,133 @@ paths:
           </Info>'
     servers:
       - url: http://localhost:8000
+  /v1/messages#stream:
+    post:
+      tags:
+        - Container.Messages
+      summary: Stream messages
+      description: Generate a model response from a conversation using the Anthropic
+        Messages API format. Supports streaming, function tool calls, and extended
+        thinking.
+      operationId: containerMessagesStream
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContainerMessagesStreamBody'
+        required: true
+      responses:
+        '200':
+          description: Successfully generated a streamed Messages-style response.
+          content:
+            text/event-stream:
+              examples:
+                Example:
+                  value: 'event: message_start
+
+                    data: {"type":"message_start","message":{"id":"msg_4b71d12c86d94e719c7e3984a7bb7941","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0,"cache_read_input_tokens":0}}}
+
+
+                    event: content_block_start
+
+                    data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+
+
+                    event: content_block_delta
+
+                    data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":",
+                    how can I help?"}}
+
+
+                    event: content_block_stop
+
+                    data: {"type":"content_block_stop","index":0}
+
+
+                    event: message_delta
+
+                    data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":11}}
+
+
+                    event: message_stop
+
+                    data: {"type":"message_stop"}
+
+                    '
+              schema:
+                $ref: '#/components/schemas/ContainerMessagesStreamSuccess'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagesErrorResponse'
+              examples:
+                Invalid request error:
+                  value:
+                    type: error
+                    error:
+                      type: invalid_request_error
+                      message: '...'
+                    request_id: req_...
+      x-speakeasy-name-override: stream
+      x-mint:
+        metadata:
+          title: Container Stream Messages
+          sidebarTitle: Stream Messages
+          og:title: Container Stream Messages
+          description: Generate a model response from a conversation using the Anthropic
+            Messages API format. Supports streaming, function tool calls, and extended
+            thinking.
+          og:description: Generate a model response from a conversation using the
+            Anthropic Messages API format. Supports streaming, function tool calls,
+            and extended thinking.
+          tag: Beta
+        href: /openapi/container/messages
+        content: 'Generate a model response from a conversation using the Anthropic
+          Messages API format. Supports streaming, function tool calls, and extended
+          thinking.
+
+
+          When streaming mode is used (i.e., `stream` option is set to `true`), the
+          response is in MIME type `text/event-stream`. Otherwise, the content type
+          is `application/json`.
+
+          You can view the schema of the streamed sequence of chunk objects in streaming
+          mode [here](/openapi/container/messages-chunk-object).
+
+
+          <Warning>Server-side tools are not supported in the Messages API. In `tools`,
+          only custom/client function tools are used; non-`custom` tool types are
+          ignored.</Warning>
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+    servers:
+      - url: http://localhost:8000
   /v1/completions:
     post:
       tags:
@@ -3247,7 +3672,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Successfully generated completions.
+          description: Successfully generated a completion response.
           content:
             application/json:
               schema:
@@ -3314,7 +3739,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Successfully generated a chat response.
+          description: Successfully generated a completion response.
           content:
             text/event-stream:
               examples:
@@ -3617,9 +4042,9 @@ paths:
       x-speakeasy-name-override: stream
       x-mint:
         metadata:
-          title: Container Audio Transcriptions (Stream)
+          title: Container Stream Audio Transcriptions
           sidebarTitle: Stream Audio Transcriptions
-          og:title: Container Audio Transcriptions (Stream)
+          og:title: Container Stream Audio Transcriptions
           description: Transcribe an audio file into text.
           og:description: Transcribe an audio file into text.
         content: 'Transcribe an audio file into text.
@@ -7755,7 +8180,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -8090,7 +8515,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -8476,7 +8901,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -8812,7 +9237,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -9215,7 +9640,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -9549,7 +9974,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -9879,7 +10304,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -10212,7 +10637,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -10541,7 +10966,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -10875,7 +11300,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -11203,7 +11628,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -11535,7 +11960,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -11664,8 +12089,9 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -11720,7 +12146,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         temperature:
@@ -11915,7 +12341,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -12258,7 +12684,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -12694,8 +13120,10 @@ components:
             - type: boolean
             - type: 'null'
           title: Stream
-          description: Whether to stream output as server-sent events (`text/event-stream`).
-            When false or omitted, returns a single JSON response.
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -12813,6 +13241,180 @@ components:
           - content: Hello, summarize what you can do in one sentence.
             role: user
         model: zai-org/GLM-5.2
+    ContainerMessagesStreamBody:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/MessagesInputMessage'
+          type: array
+          minItems: 1
+          title: Messages
+          description: A list of conversation messages ordered from oldest to newest.
+            Must contain at least one item.
+          examples:
+            - - content: Explain top_p in one sentence.
+                role: user
+        max_tokens:
+          anyOf:
+            - type: integer
+              minimum: 1.0
+            - type: 'null'
+          title: Max Tokens
+          description: Maximum number of tokens to generate for the assistant response.
+            Must be greater than 0 when provided.
+        model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Model
+          description: Routes the request to a specific adapter.
+          examples:
+            - (adapter-route)
+        system:
+          anyOf:
+            - anyOf:
+                - type: string
+                - items:
+                    $ref: '#/components/schemas/MessagesSystemTextBlock'
+                  type: array
+              description: Payload format for the top-level `system` instruction.
+            - type: 'null'
+          title: System
+          description: Optional top-level system instruction applied before conversation
+            turns. Supports a plain string or an array of text blocks.
+        stream:
+          type: boolean
+          title: Stream
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: true
+        temperature:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Temperature
+          description: Sampling temperature. Lower values make outputs more deterministic;
+            higher values increase diversity.
+        top_p:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Top P
+          description: Nucleus sampling parameter. The model samples from the smallest
+            token set whose cumulative probability reaches `top_p`.
+        top_k:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Top K
+          description: Limits sampling to the `k` most likely tokens at each decoding
+            step.
+        stop_sequences:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Stop Sequences
+          description: Stop strings that terminate generation when matched in output.
+            The matched value is returned in `stop_sequence` when applicable.
+        tools:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/MessagesToolDefinition'
+              type: array
+            - type: 'null'
+          title: Tools
+          description: Tool definitions available to the model. Use this to allow
+            tool calls with structured arguments.
+        tool_choice:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesToolChoice'
+            - type: 'null'
+          description: Controls tool-calling behavior (`auto`, `any`, `tool`, `none`)
+            and optional parallel-call behavior.
+        thinking:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesThinkingConfig'
+            - type: 'null'
+          description: Controls reasoning behavior with mode (`enabled`, `disabled`,
+            `adaptive`). `enabled` requires `budget_tokens`; `disabled` and `adaptive`
+            must not include it.
+        output_config:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesOutputConfig'
+            - type: 'null'
+          description: Output generation options including effort level and structured
+            output format settings.
+        cache_control:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Cache Control
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        container:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Container
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        context_manager:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Context Manager
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        inference_geo:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Inference Geo
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        metadata:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Metadata
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        service_tier:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Service Tier
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+      additionalProperties: true
+      type: object
+      required:
+        - messages
+      title: ContainerMessagesStreamBody
+      example:
+        messages:
+          - content: Hello, summarize what you can do in one sentence.
+            role: user
+        model: zai-org/GLM-5.2
+    ContainerMessagesStreamSuccess:
+      properties:
+        data:
+          $ref: '#/components/schemas/MessagesStreamEvent'
+          description: A server-sent event containing a streamed Messages API update.
+      type: object
+      required:
+        - data
+      title: ContainerMessagesStreamSuccess
     ContainerMessagesSuccess:
       properties:
         id:
@@ -13097,7 +13699,13 @@ components:
       example:
         input: Hello!
     ContainerResponsesStreamSuccess:
-      $ref: '#/components/schemas/ResponsesStreamEvent'
+      properties:
+        data:
+          $ref: '#/components/schemas/ResponsesStreamEvent'
+          description: A server-sent event containing a streamed Responses API update.
+      type: object
+      required:
+        - data
       title: ContainerResponsesStreamSuccess
     ContainerResponsesSuccess:
       properties:
@@ -13434,8 +14042,9 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -13492,7 +14101,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         temperature:
@@ -13689,7 +14298,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -14034,7 +14643,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -15112,8 +15721,10 @@ components:
             - type: boolean
             - type: 'null'
           title: Stream
-          description: Whether to stream output as server-sent events (`text/event-stream`).
-            When false or omitted, returns a single JSON response.
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -15232,6 +15843,181 @@ components:
           - content: Hello, summarize what you can do in one sentence.
             role: user
         model: (endpoint-id)
+    DedicatedMessagesStreamBody:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/MessagesInputMessage'
+          type: array
+          minItems: 1
+          title: Messages
+          description: A list of conversation messages ordered from oldest to newest.
+            Must contain at least one item.
+          examples:
+            - - content: Explain top_p in one sentence.
+                role: user
+        max_tokens:
+          anyOf:
+            - type: integer
+              minimum: 1.0
+            - type: 'null'
+          title: Max Tokens
+          description: Maximum number of tokens to generate for the assistant response.
+            Must be greater than 0 when provided.
+        model:
+          type: string
+          title: Model
+          description: ID of target endpoint. If you want to send request to specific
+            adapter, use the format "YOUR_ENDPOINT_ID:YOUR_ADAPTER_ROUTE". Otherwise,
+            you can just use "YOUR_ENDPOINT_ID" alone.
+          examples:
+            - (endpoint-id)
+        system:
+          anyOf:
+            - anyOf:
+                - type: string
+                - items:
+                    $ref: '#/components/schemas/MessagesSystemTextBlock'
+                  type: array
+              description: Payload format for the top-level `system` instruction.
+            - type: 'null'
+          title: System
+          description: Optional top-level system instruction applied before conversation
+            turns. Supports a plain string or an array of text blocks.
+        stream:
+          type: boolean
+          title: Stream
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: true
+        temperature:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Temperature
+          description: Sampling temperature. Lower values make outputs more deterministic;
+            higher values increase diversity.
+        top_p:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Top P
+          description: Nucleus sampling parameter. The model samples from the smallest
+            token set whose cumulative probability reaches `top_p`.
+        top_k:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Top K
+          description: Limits sampling to the `k` most likely tokens at each decoding
+            step.
+        stop_sequences:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Stop Sequences
+          description: Stop strings that terminate generation when matched in output.
+            The matched value is returned in `stop_sequence` when applicable.
+        tools:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/MessagesToolDefinition'
+              type: array
+            - type: 'null'
+          title: Tools
+          description: Tool definitions available to the model. Use this to allow
+            tool calls with structured arguments.
+        tool_choice:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesToolChoice'
+            - type: 'null'
+          description: Controls tool-calling behavior (`auto`, `any`, `tool`, `none`)
+            and optional parallel-call behavior.
+        thinking:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesThinkingConfig'
+            - type: 'null'
+          description: Controls reasoning behavior with mode (`enabled`, `disabled`,
+            `adaptive`). `enabled` requires `budget_tokens`; `disabled` and `adaptive`
+            must not include it.
+        output_config:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesOutputConfig'
+            - type: 'null'
+          description: Output generation options including effort level and structured
+            output format settings.
+        cache_control:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Cache Control
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        container:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Container
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        context_manager:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Context Manager
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        inference_geo:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Inference Geo
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        metadata:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Metadata
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        service_tier:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Service Tier
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+      additionalProperties: true
+      type: object
+      required:
+        - messages
+        - model
+      title: DedicatedMessagesStreamBody
+      example:
+        messages:
+          - content: Hello, summarize what you can do in one sentence.
+            role: user
+        model: (endpoint-id)
+    DedicatedMessagesStreamSuccess:
+      properties:
+        data:
+          $ref: '#/components/schemas/MessagesStreamEvent'
+          description: A server-sent event containing a streamed Messages API update.
+      type: object
+      required:
+        - data
+      title: DedicatedMessagesStreamSuccess
     DedicatedMessagesSuccess:
       properties:
         id:
@@ -15520,7 +16306,13 @@ components:
         input: Hello!
         model: (endpoint-id)
     DedicatedResponsesStreamSuccess:
-      $ref: '#/components/schemas/ResponsesStreamEvent'
+      properties:
+        data:
+          $ref: '#/components/schemas/ResponsesStreamEvent'
+          description: A server-sent event containing a streamed Responses API update.
+      type: object
+      required:
+        - data
       title: DedicatedResponsesStreamSuccess
     DedicatedResponsesSuccess:
       properties:
@@ -16537,6 +17329,432 @@ components:
         - name
         - input
       title: MessagesResponseToolUseBlock
+    MessagesStreamContentBlockDelta:
+      properties:
+        type:
+          type: string
+          const: content_block_delta
+          title: Type
+          description: The type of the event.
+        index:
+          type: integer
+          title: Index
+          description: Index of the content block being updated.
+        delta:
+          $ref: '#/components/schemas/MessagesStreamContentBlockDeltaPayload'
+          description: Incremental delta payload.
+      type: object
+      required:
+        - type
+        - index
+        - delta
+      title: MessagesStreamContentBlockDelta
+    MessagesStreamContentBlockDeltaPayload:
+      oneOf:
+        - $ref: '#/components/schemas/MessagesStreamTextDelta'
+          title: Text Delta
+        - $ref: '#/components/schemas/MessagesStreamThinkingDelta'
+          title: Thinking Delta
+        - $ref: '#/components/schemas/MessagesStreamSignatureDelta'
+          title: Signature Delta
+        - $ref: '#/components/schemas/MessagesStreamInputJsonDelta'
+          title: Input JSON Delta
+      discriminator:
+        propertyName: type
+        mapping:
+          input_json_delta: '#/components/schemas/MessagesStreamInputJsonDelta'
+          signature_delta: '#/components/schemas/MessagesStreamSignatureDelta'
+          text_delta: '#/components/schemas/MessagesStreamTextDelta'
+          thinking_delta: '#/components/schemas/MessagesStreamThinkingDelta'
+    MessagesStreamContentBlockStart:
+      properties:
+        type:
+          type: string
+          const: content_block_start
+          title: Type
+          description: The type of the event.
+        index:
+          type: integer
+          title: Index
+          description: Index of the content block in the response `content` array.
+        content_block:
+          $ref: '#/components/schemas/MessagesStreamContentBlockStartPayload'
+          description: Initial content block payload.
+      type: object
+      required:
+        - type
+        - index
+        - content_block
+      title: MessagesStreamContentBlockStart
+    MessagesStreamContentBlockStartPayload:
+      oneOf:
+        - $ref: '#/components/schemas/MessagesStreamStartTextBlock'
+          title: Text
+        - $ref: '#/components/schemas/MessagesStreamStartThinkingBlock'
+          title: Thinking
+        - $ref: '#/components/schemas/MessagesStreamStartToolUseBlock'
+          title: Tool Use
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/MessagesStreamStartTextBlock'
+          thinking: '#/components/schemas/MessagesStreamStartThinkingBlock'
+          tool_use: '#/components/schemas/MessagesStreamStartToolUseBlock'
+    MessagesStreamContentBlockStop:
+      properties:
+        type:
+          type: string
+          const: content_block_stop
+          title: Type
+          description: The type of the event.
+        index:
+          type: integer
+          title: Index
+          description: Index of the block that has finished streaming.
+      type: object
+      required:
+        - type
+        - index
+      title: MessagesStreamContentBlockStop
+    MessagesStreamErrorDetail:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: Error category, such as `invalid_request_error`.
+        message:
+          type: string
+          title: Message
+          description: Human-readable error message.
+      type: object
+      required:
+        - type
+        - message
+      title: MessagesStreamErrorDetail
+    MessagesStreamErrorEvent:
+      properties:
+        type:
+          type: string
+          const: error
+          title: Type
+          description: The type of the event.
+        error:
+          $ref: '#/components/schemas/MessagesStreamErrorDetail'
+          description: Error payload object.
+        request_id:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Request Id
+          description: Request identifier for debugging and support.
+      type: object
+      required:
+        - type
+        - error
+      title: MessagesStreamErrorEvent
+    MessagesStreamEvent:
+      oneOf:
+        - $ref: '#/components/schemas/MessagesStreamMessageStart'
+          title: Message Start
+        - $ref: '#/components/schemas/MessagesStreamContentBlockStart'
+          title: Content Block Start
+        - $ref: '#/components/schemas/MessagesStreamContentBlockDelta'
+          title: Content Block Delta
+        - $ref: '#/components/schemas/MessagesStreamContentBlockStop'
+          title: Content Block Stop
+        - $ref: '#/components/schemas/MessagesStreamMessageDelta'
+          title: Message Delta
+        - $ref: '#/components/schemas/MessagesStreamMessageStop'
+          title: Message Stop
+        - $ref: '#/components/schemas/MessagesStreamErrorEvent'
+          title: Error
+      discriminator:
+        propertyName: type
+        mapping:
+          content_block_delta: '#/components/schemas/MessagesStreamContentBlockDelta'
+          content_block_start: '#/components/schemas/MessagesStreamContentBlockStart'
+          content_block_stop: '#/components/schemas/MessagesStreamContentBlockStop'
+          error: '#/components/schemas/MessagesStreamErrorEvent'
+          message_delta: '#/components/schemas/MessagesStreamMessageDelta'
+          message_start: '#/components/schemas/MessagesStreamMessageStart'
+          message_stop: '#/components/schemas/MessagesStreamMessageStop'
+    MessagesStreamInputJsonDelta:
+      properties:
+        type:
+          type: string
+          const: input_json_delta
+          title: Type
+          description: Delta type.
+        partial_json:
+          type: string
+          title: Partial Json
+          description: Partial JSON fragment for tool arguments when `type=input_json_delta`.
+      type: object
+      required:
+        - type
+        - partial_json
+      title: MessagesStreamInputJsonDelta
+    MessagesStreamMessageDelta:
+      properties:
+        type:
+          type: string
+          const: message_delta
+          title: Type
+          description: The type of the event.
+        delta:
+          $ref: '#/components/schemas/MessagesStreamMessageDeltaPayload'
+          description: Final message-level delta.
+        usage:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesStreamMessageDeltaUsage'
+            - type: 'null'
+          description: Usage delta object that may be emitted near stream completion.
+      type: object
+      required:
+        - type
+        - delta
+      title: MessagesStreamMessageDelta
+    MessagesStreamMessageDeltaPayload:
+      properties:
+        stop_reason:
+          anyOf:
+            - type: string
+              enum:
+                - end_turn
+                - max_tokens
+                - tool_use
+                - stop_sequence
+            - type: 'null'
+          title: Stop Reason
+          description: Why generation stopped.
+        stop_sequence:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Stop Sequence
+          description: Matched stop sequence when `stop_reason=stop_sequence`.
+      type: object
+      title: MessagesStreamMessageDeltaPayload
+    MessagesStreamMessageDeltaUsage:
+      properties:
+        input_tokens:
+          anyOf:
+            - type: integer
+              minimum: 0.0
+            - type: 'null'
+          title: Input Tokens
+          description: Input token count delta when included.
+        output_tokens:
+          anyOf:
+            - type: integer
+              minimum: 0.0
+            - type: 'null'
+          title: Output Tokens
+          description: Output token count delta when included.
+        cache_read_input_tokens:
+          anyOf:
+            - type: integer
+              minimum: 0.0
+            - type: 'null'
+          title: Cache Read Input Tokens
+          description: Cached input token count delta when included.
+      type: object
+      title: MessagesStreamMessageDeltaUsage
+    MessagesStreamMessageEnvelope:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique ID of the response message.
+        type:
+          type: string
+          const: message
+          title: Type
+          description: Object type, always `message`.
+        role:
+          type: string
+          const: assistant
+          title: Role
+          description: Author role of streamed output, always `assistant`.
+        content:
+          items:
+            $ref: '#/components/schemas/MessagesResponseContentBlock'
+          type: array
+          title: Content
+          description: Initialized as an empty array at start. Populated by subsequent
+            block events.
+        stop_reason:
+          anyOf:
+            - type: string
+              enum:
+                - end_turn
+                - max_tokens
+                - tool_use
+                - stop_sequence
+            - type: 'null'
+          title: Stop Reason
+          description: Stop reason placeholder at start.
+        stop_sequence:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Stop Sequence
+          description: Matched stop sequence placeholder at start.
+        usage:
+          $ref: '#/components/schemas/MessagesUsage'
+          description: Running usage object.
+        model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Model
+          description: Model identifier for this response, when available.
+      type: object
+      required:
+        - id
+        - type
+        - role
+        - usage
+      title: MessagesStreamMessageEnvelope
+    MessagesStreamMessageStart:
+      properties:
+        type:
+          type: string
+          const: message_start
+          title: Type
+          description: The type of the event.
+        message:
+          $ref: '#/components/schemas/MessagesStreamMessageEnvelope'
+          description: Initial response envelope for this streamed message.
+      type: object
+      required:
+        - type
+        - message
+      title: MessagesStreamMessageStart
+    MessagesStreamMessageStop:
+      properties:
+        type:
+          type: string
+          const: message_stop
+          title: Type
+          description: The type of the event.
+      type: object
+      required:
+        - type
+      title: MessagesStreamMessageStop
+    MessagesStreamSignatureDelta:
+      properties:
+        type:
+          type: string
+          const: signature_delta
+          title: Type
+          description: Delta type.
+        signature:
+          type: string
+          title: Signature
+          description: Signature fragment when `type=signature_delta`.
+      type: object
+      required:
+        - type
+        - signature
+      title: MessagesStreamSignatureDelta
+    MessagesStreamStartTextBlock:
+      properties:
+        type:
+          type: string
+          const: text
+          title: Type
+          description: Content block type.
+        text:
+          type: string
+          title: Text
+          description: Text content when `type=text`.
+      type: object
+      required:
+        - type
+        - text
+      title: MessagesStreamStartTextBlock
+    MessagesStreamStartThinkingBlock:
+      properties:
+        type:
+          type: string
+          const: thinking
+          title: Type
+          description: Content block type.
+        thinking:
+          type: string
+          title: Thinking
+          description: Reasoning content when `type=thinking`.
+        signature:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Signature
+          description: Optional signature when `type=thinking`.
+      type: object
+      required:
+        - type
+        - thinking
+      title: MessagesStreamStartThinkingBlock
+    MessagesStreamStartToolUseBlock:
+      properties:
+        type:
+          type: string
+          const: tool_use
+          title: Type
+          description: Content block type.
+        id:
+          type: string
+          title: Id
+          description: Tool call ID when `type=tool_use`.
+        name:
+          type: string
+          title: Name
+          description: Tool name when `type=tool_use`.
+        input:
+          additionalProperties: true
+          type: object
+          title: Input
+          description: Parsed tool input object when `type=tool_use`.
+      type: object
+      required:
+        - type
+        - id
+        - name
+        - input
+      title: MessagesStreamStartToolUseBlock
+    MessagesStreamTextDelta:
+      properties:
+        type:
+          type: string
+          const: text_delta
+          title: Type
+          description: Delta type.
+        text:
+          type: string
+          title: Text
+          description: Text fragment when `type=text_delta`.
+      type: object
+      required:
+        - type
+        - text
+      title: MessagesStreamTextDelta
+    MessagesStreamThinkingDelta:
+      properties:
+        type:
+          type: string
+          const: thinking_delta
+          title: Type
+          description: Delta type.
+        thinking:
+          type: string
+          title: Thinking
+          description: Reasoning fragment when `type=thinking_delta`.
+      type: object
+      required:
+        - type
+        - thinking
+      title: MessagesStreamThinkingDelta
     MessagesSystemTextBlock:
       properties:
         type:
@@ -16835,6 +18053,12 @@ components:
             - type: 'null'
           title: Deprecation Date
           description: YYYY-MM-DD (UTC date)
+        discount_to_user:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Discount To User
+          description: Fractional discount applied to user-facing pricing
       type: object
       required:
         - id
@@ -18505,8 +19729,9 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -18561,7 +19786,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the transcription result. When set to `true`,
-            the transcription result will be streamed as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            the transcription is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         temperature:
@@ -18756,7 +19981,7 @@ components:
             - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -19099,7 +20324,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -19496,8 +20721,10 @@ components:
             - type: boolean
             - type: 'null'
           title: Stream
-          description: Whether to stream output as server-sent events (`text/event-stream`).
-            When false or omitted, returns a single JSON response.
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: false
         temperature:
           anyOf:
             - type: number
@@ -19616,6 +20843,179 @@ components:
           - content: Hello, summarize what you can do in one sentence.
             role: user
         model: zai-org/GLM-5.2
+    ServerlessMessagesStreamBody:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/MessagesInputMessage'
+          type: array
+          minItems: 1
+          title: Messages
+          description: A list of conversation messages ordered from oldest to newest.
+            Must contain at least one item.
+          examples:
+            - - content: Explain top_p in one sentence.
+                role: user
+        max_tokens:
+          anyOf:
+            - type: integer
+              minimum: 1.0
+            - type: 'null'
+          title: Max Tokens
+          description: Maximum number of tokens to generate for the assistant response.
+            Must be greater than 0 when provided.
+        model:
+          type: string
+          title: Model
+          description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
+          examples:
+            - zai-org/GLM-5.2
+        system:
+          anyOf:
+            - anyOf:
+                - type: string
+                - items:
+                    $ref: '#/components/schemas/MessagesSystemTextBlock'
+                  type: array
+              description: Payload format for the top-level `system` instruction.
+            - type: 'null'
+          title: System
+          description: Optional top-level system instruction applied before conversation
+            turns. Supports a plain string or an array of text blocks.
+        stream:
+          type: boolean
+          title: Stream
+          description: Whether to stream the response. When set to `true`, events
+            are sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            once generated.
+          default: true
+        temperature:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Temperature
+          description: Sampling temperature. Lower values make outputs more deterministic;
+            higher values increase diversity.
+        top_p:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Top P
+          description: Nucleus sampling parameter. The model samples from the smallest
+            token set whose cumulative probability reaches `top_p`.
+        top_k:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Top K
+          description: Limits sampling to the `k` most likely tokens at each decoding
+            step.
+        stop_sequences:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Stop Sequences
+          description: Stop strings that terminate generation when matched in output.
+            The matched value is returned in `stop_sequence` when applicable.
+        tools:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/MessagesToolDefinition'
+              type: array
+            - type: 'null'
+          title: Tools
+          description: Tool definitions available to the model. Use this to allow
+            tool calls with structured arguments.
+        tool_choice:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesToolChoice'
+            - type: 'null'
+          description: Controls tool-calling behavior (`auto`, `any`, `tool`, `none`)
+            and optional parallel-call behavior.
+        thinking:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesThinkingConfig'
+            - type: 'null'
+          description: Controls reasoning behavior with mode (`enabled`, `disabled`,
+            `adaptive`). `enabled` requires `budget_tokens`; `disabled` and `adaptive`
+            must not include it.
+        output_config:
+          anyOf:
+            - $ref: '#/components/schemas/MessagesOutputConfig'
+            - type: 'null'
+          description: Output generation options including effort level and structured
+            output format settings.
+        cache_control:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Cache Control
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        container:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Container
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        context_manager:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Context Manager
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        inference_geo:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Inference Geo
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        metadata:
+          anyOf:
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Metadata
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+        service_tier:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - type: 'null'
+          title: Service Tier
+          description: Compatibility field accepted for request portability. Parsed
+            but not used for generation.
+      additionalProperties: true
+      type: object
+      required:
+        - messages
+        - model
+      title: ServerlessMessagesStreamBody
+      example:
+        messages:
+          - content: Hello, summarize what you can do in one sentence.
+            role: user
+        model: zai-org/GLM-5.2
+    ServerlessMessagesStreamSuccess:
+      properties:
+        data:
+          $ref: '#/components/schemas/MessagesStreamEvent'
+          description: A server-sent event containing a streamed Messages API update.
+      type: object
+      required:
+        - data
+      title: ServerlessMessagesStreamSuccess
     ServerlessMessagesSuccess:
       properties:
         id:
@@ -19920,7 +21320,13 @@ components:
         input: Hello!
         model: zai-org/GLM-5.2
     ServerlessResponsesStreamSuccess:
-      $ref: '#/components/schemas/ResponsesStreamEvent'
+      properties:
+        data:
+          $ref: '#/components/schemas/ResponsesStreamEvent'
+          description: A server-sent event containing a streamed Responses API update.
+      type: object
+      required:
+        - data
       title: ServerlessResponsesStreamSuccess
     ServerlessResponsesSuccess:
       properties:
@@ -20187,10 +21593,12 @@ components:
             the API will stop generation. The stop phrases are excluded from the result.
             Defaults to empty list.
         stream:
-          type: boolean
+          anyOf:
+            - type: boolean
+            - type: 'null'
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: false
         stream_options:
@@ -20515,7 +21923,7 @@ components:
           type: boolean
           title: Stream
           description: Whether to stream the generation result. When set to `true`,
-            each token will be sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
+            each token is sent as [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
             once generated.
           default: true
         stream_options:
@@ -20676,11 +22084,8 @@ components:
         tools:
           - type: math:calculator
     ServerlessToolAssistedChatCompletionStreamSuccess:
-      anyOf:
-        - $ref: '#/components/schemas/StreamedToolAssistedChatToken'
-        - $ref: '#/components/schemas/StreamedToolAssistedChatToolStatus'
+      $ref: '#/components/schemas/StreamedToolAssistedChatEvent'
       title: ServerlessToolAssistedChatCompletionStreamSuccess
-      description: A server-sent event containing chat completions content.
     SplitInfo:
       properties:
         id:
@@ -20976,12 +22381,29 @@ components:
       required:
         - arguments
       title: StreamedFunctionResult
+    StreamedToolAssistedChatEvent:
+      oneOf:
+        - $ref: '#/components/schemas/StreamedToolAssistedChatToken'
+          title: Token
+        - $ref: '#/components/schemas/StreamedToolAssistedChatToolStatus'
+          title: Tool Status
+      discriminator:
+        propertyName: event
+        mapping:
+          token: '#/components/schemas/StreamedToolAssistedChatToken'
+          tool_status: '#/components/schemas/StreamedToolAssistedChatToolStatus'
     StreamedToolAssistedChatToken:
       properties:
+        event:
+          type: string
+          const: token
+          title: Event
+          description: The type of the event.
         data:
           $ref: '#/components/schemas/StreamedChatData'
       type: object
       required:
+        - event
         - data
       title: StreamedToolAssistedChatToken
     StreamedToolAssistedChatToolStatus:
@@ -20990,6 +22412,7 @@ components:
           type: string
           const: tool_status
           title: Event
+          description: The type of the event.
         data:
           $ref: '#/components/schemas/ToolStatusData'
       type: object
