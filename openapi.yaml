@@ -4209,6 +4209,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CostResponse'
+              example:
+                data:
+                  - has_more: true
+                    data:
+                      - start_time: '2023-11-07T05:31:56Z'
+                        end_time: '2023-11-07T05:31:56Z'
+                        results:
+                          - total: 2.709083
+                            quantity: 0.934167
+                            unit_price: 290
+                            line_item: h100, gpu_time
         '429':
           description: Rate limit exceeded
         '422':
@@ -4221,7 +4232,7 @@ paths:
           og:title: Cost
           description: Get cost details for the team.
           og:description: Get cost details for the team.
-        href: /openapi/administration/usage/cost
+        href: /openapi/administration/cost
         content: 'Get cost details for the team.
 
 
@@ -4413,6 +4424,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsageResponse'
+              example:
+                has_more: false
+                data:
+                  - start_time: '2023-11-07T00:00:00Z'
+                    end_time: '2023-11-08T00:00:00Z'
+                    results:
+                      - num_model_requests: 1200
+                        input_tokens: 180000
+                        input_cached_tokens: 45000
+                        output_tokens: 62000
+                        product_type: model_apis
+                        model: zai-org/GLM-5.2
+                        user_id: user_id_123
+                  - start_time: '2023-11-08T00:00:00Z'
+                    end_time: '2023-11-09T00:00:00Z'
+                    results:
+                      - num_model_requests: 800
+                        input_tokens: 120000
+                        input_cached_tokens: 30000
+                        output_tokens: 41000
+                        product_type: dedicated_endpoints
+                        model: dedicated-endpoint-01
+                        user_id: user_id_456
+                        gpu_usage:
+                          a100: 120000
+                          h100: 80000
         '400':
           description: Invalid request parameters
         '429':
@@ -4427,7 +4464,7 @@ paths:
           og:title: Usage
           description: Get usage details for the team.
           og:description: Get usage details for the team.
-        href: /openapi/administration/usage/usage
+        href: /openapi/administration/usage
         content: 'Get usage details for the team.
 
 
@@ -14094,15 +14131,11 @@ components:
         has_more:
           type: boolean
           title: Has More
-          examples:
-            - false
         next_page:
           anyOf:
             - type: string
             - type: 'null'
           title: Next Page
-          examples:
-            - null
         data:
           items:
             $ref: '#/components/schemas/CostBucket'
@@ -18211,51 +18244,49 @@ components:
         id:
           type: string
           title: Id
+        hugging_face_id:
+          type: string
+          title: Hugging Face Id
+          description: Required when the model is hosted on Hugging Face
+          default: ''
         name:
           type: string
           title: Name
-        max_completion_tokens:
+        created:
           type: integer
-          title: Max Completion Tokens
+          title: Created
         context_length:
           type: integer
           title: Context Length
-        functionality:
-          $ref: '#/components/schemas/Functionality'
-          description: Model functionality
+        max_completion_tokens:
+          type: integer
+          title: Max Completion Tokens
         pricing:
           $ref: '#/components/schemas/PricingModel'
           title: Pricing
           description: Token prices for input and output
-        hugging_face_url:
-          type: string
-          minLength: 1
-          format: uri
-          title: Hugging Face Url
+        functionality:
+          $ref: '#/components/schemas/Functionality'
+          description: Model functionality
         description:
           type: string
           title: Description
-        license:
-          type: string
-          minLength: 1
-          format: uri
-          title: License
-        policy:
-          anyOf:
-            - type: string
-              minLength: 1
-              format: uri
-            - type: 'null'
-          title: Policy
-        created:
-          type: integer
-          title: Created
         deprecation_date:
           anyOf:
             - type: string
             - type: 'null'
           title: Deprecation Date
-          description: YYYY-MM-DD (UTC date)
+          description: ISO 8601 UTC hour (YYYY-MM-DDTHH:00:00Z)
+        hugging_face_url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Hugging Face Url
+        license:
+          type: string
+          minLength: 1
+          format: uri
+          title: License
         discount_to_user:
           anyOf:
             - type: number
@@ -18266,14 +18297,14 @@ components:
       required:
         - id
         - name
-        - max_completion_tokens
-        - context_length
-        - functionality
-        - pricing
-        - hugging_face_url
-        - description
-        - license
         - created
+        - context_length
+        - max_completion_tokens
+        - pricing
+        - functionality
+        - description
+        - hugging_face_url
+        - license
       title: ModelCatalogResponseItem
       description: Model listing in `/v1/models` API.
     OpenRouterDatacenter:
@@ -18470,49 +18501,33 @@ components:
     PricingModel:
       properties:
         input:
-          type: number
-          minimum: 0.0
+          type: string
           title: Input
-          description: Price per input token
+          description: Price per input token in USD
         output:
-          type: number
-          minimum: 0.0
+          type: string
           title: Output
-          description: Price per output token
+          description: Price per output token in USD
         prompt:
-          type: number
-          minimum: 0.0
+          type: string
           title: Prompt
-          description: Price per input token (alias of input)
+          description: Price per input token in USD (alias of input)
         completion:
-          type: number
-          minimum: 0.0
+          type: string
           title: Completion
-          description: Price per output token (alias of output)
+          description: Price per output token in USD (alias of output)
         input_cache_read:
           anyOf:
-            - type: number
-              minimum: 0.0
+            - type: string
             - type: 'null'
           title: Input Cache Read
-          description: Price per cached input token read
-        response_time:
-          type: number
-          minimum: 0.0
-          title: Response Time
-          description: Price per response time in seconds
-          default: 0
+          description: Price per cached input token read in USD
         audio_minute:
           anyOf:
-            - type: number
-              minimum: 0.0
+            - type: string
             - type: 'null'
           title: Audio Minute
-          description: Price per audio minute
-        unit_type:
-          $ref: '#/components/schemas/ServerlessPriceUnitType'
-          description: Pricing unit type (TOKEN / SECOND / AUDIO_MINUTE)
-          default: TOKEN
+          description: Price per audio minute in USD
       type: object
       required:
         - input
@@ -18520,7 +18535,7 @@ components:
         - prompt
         - completion
       title: PricingModel
-      description: Pricing model supporting both token-based and time-based pricing.
+      description: Pricing model for token-based pricing.
     ProductType:
       type: string
       enum:
@@ -21296,14 +21311,6 @@ components:
         - data
       title: ServerlessModelListSuccess
       description: '`/v1/models` API response.'
-    ServerlessPriceUnitType:
-      type: string
-      enum:
-        - TOKEN
-        - SECOND
-        - AUDIO_MINUTE
-      title: ServerlessPriceUnitType
-      description: Serverless price unit type.
     ServerlessResponsesBody:
       properties:
         input:
@@ -23039,15 +23046,11 @@ components:
         has_more:
           type: boolean
           title: Has More
-          examples:
-            - false
         next_page:
           anyOf:
             - type: string
             - type: 'null'
           title: Next Page
-          examples:
-            - null
         data:
           items:
             $ref: '#/components/schemas/UsageBucket'
