@@ -15475,6 +15475,13 @@ components:
             - type: 'null'
           title: Maximum Input Length
           description: The maximum allowed input length.
+        maxContextLength:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Maximum Context Length
+          description: The maximum context length (input + output tokens) to serve
+            with.
         tokenizerSkipSpecialTokens:
           type: boolean
           title: Skip Special Tokens
@@ -16770,6 +16777,12 @@ components:
             - type: integer
             - type: 'null'
           title: Max Input Length
+        max_context_length:
+          anyOf:
+            - type: integer
+              minimum: 1.0
+            - type: 'null'
+          title: Max Context Length
         queue_timeout_ms:
           anyOf:
             - type: integer
