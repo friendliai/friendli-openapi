@@ -96,7 +96,7 @@ paths:
           tool calls, and structured outputs.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -196,7 +196,7 @@ paths:
           tool calls, and structured outputs.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -297,7 +297,7 @@ paths:
           tool calls, structured outputs, and reasoning controls.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           <Note>
@@ -447,7 +447,7 @@ paths:
           tool calls, structured outputs, and reasoning controls.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           <Note>
@@ -581,7 +581,7 @@ paths:
           thinking.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           <Note>
@@ -736,7 +736,7 @@ paths:
           thinking.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           <Note>
@@ -847,7 +847,7 @@ paths:
           model.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -929,7 +929,7 @@ paths:
           streaming and configurable generation parameters.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -1023,7 +1023,7 @@ paths:
           streaming and configurable generation parameters.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -1108,7 +1108,7 @@ paths:
         content: 'Transcribe an audio file into text.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -1194,7 +1194,7 @@ paths:
         content: 'Transcribe an audio file into text.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -1418,7 +1418,7 @@ paths:
           comprehensive and actionable responses.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -1558,7 +1558,7 @@ paths:
           comprehensive and actionable responses.
 
 
-          See available models at [this pricing table](/guides/model-apis/pricing#billing-methods).
+          See available models at [this pricing table](/guides/model-apis/pricing).
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -4106,6 +4106,1299 @@ paths:
         content: Classify text input into categories with per-class probabilities.
     servers:
       - url: http://localhost:8000
+  /serverless/v1/knowledge/retrieve:
+    post:
+      tags:
+        - Serverless.Knowledge
+      summary: Knowledge Retrieval
+      description: Retrieve related documents from the chosen knowledge base by similarity.
+      operationId: serverlessKnowledgeRetrieve
+      security:
+        - token: []
+      parameters:
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerlessKnowledgeRetrievalBody'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerlessKnowledgeRetrievalSuccess'
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: retrieve
+      x-speakeasy-ignore: true
+  /serverless/v1/models:
+    get:
+      tags:
+        - Serverless.Model
+      summary: List Models
+      description: Lists the currently available models, and provides basic information
+        about each one such as pricing and functionality.
+      operationId: serverlessModels
+      responses:
+        '200':
+          description: Successfully listed all available models.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerlessModelListSuccess'
+              examples:
+                Example:
+                  value:
+                    data:
+                      - id: zai-org/GLM-5.2
+                        name: zai-org/GLM-5.2
+                        created: 1781491205
+                        context_length: 1048576
+                        max_completion_tokens: 1048576
+                        pricing:
+                          input: '0.0000014'
+                          output: '0.0000044'
+                          prompt: '0.0000014'
+                          completion: '0.0000044'
+                          input_cache_read: '0.00000026'
+                        functionality:
+                          tool_call: true
+                          parallel_tool_call: true
+                          structured_output: true
+                          tool_choice: true
+                          system_messages: true
+                        description: Open flagship GLM for long-horizon coding agents
+                          and million-token context work
+                        reasoning: true
+                        reasoning_options:
+                          - type: toggle
+                          - type: effort
+                            values:
+                              - high
+                              - max
+                          - type: budget_tokens
+                            min: -1
+                            max: 1048576
+                        input_modalities:
+                          - text
+                        output_modalities:
+                          - text
+                        interleaved: reasoning_content
+                        base_model: zhipuai/glm-5.2
+                        mode: chat
+                        default_params:
+                          repetition_penalty: 1
+                          temperature: 1
+                          top_p: 1
+                          min_p: 0
+                          top_k: 0
+      x-speakeasy-name-override: models
+      x-mint:
+        metadata:
+          title: Model APIs Supported Models
+          sidebarTitle: List Models
+          og:title: Model APIs Supported Models
+          description: Lists the currently available models, and provides basic information
+            about each one such as pricing and functionality.
+          og:description: Lists the currently available models, and provides basic
+            information about each one such as pricing and functionality.
+          tag: Beta
+        href: /openapi/model-apis/models
+        content: 'Lists the currently available models, and provides basic information
+          about each one such as pricing and functionality.
+
+
+          See available models at [this pricing table](/guides/model-apis/pricing).'
+  /serverless/v1/openrouter/models:
+    get:
+      tags:
+        - Serverless.Model
+      summary: OpenRouter Models
+      description: Lists the currently available models for OpenRouter integration,
+        and provides basic information about each one such as pricing and functionality.
+      operationId: serverlessOpenrouterModels
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenRouterModelListSuccess'
+      x-speakeasy-name-override: openrouterModels
+      x-speakeasy-ignore: true
+  /dedicated/endpoint/wandb-artifact-create:
+    post:
+      tags:
+        - Dedicated.Endpoint
+      summary: Create endpoint from W&B artifact
+      description: Create an endpoint from Weights & Biases artifact. If the idempotency
+        key is provided, the API will check if the endpoint already exists, and rollout
+        the existing endpoint if it does. In such cases, the project id must be provided.
+      operationId: dedicatedEndpointWandbArtifactCreate
+      security:
+        - token: []
+      parameters:
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DedicatedEndpointWandbArtifactCreateBody'
+      responses:
+        '200':
+          description: Successfully created the endpoint from W&B artifact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointWandbArtifactCreateResponse'
+              examples:
+                Example:
+                  value:
+                    endpointId: endpoint-id
+                    endpointName: endpoint-name
+                    projectId: project-id
+                    projectName: project-name
+                    teamId: team-id
+                    teamName: team-name
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: wandbArtifactCreate
+      x-mint:
+        metadata:
+          title: Dedicated Create Endpoint from W&B Artifact
+          sidebarTitle: Create Endpoint from W&B Artifact
+          og:title: Dedicated Create Endpoint from W&B Artifact
+          description: Create a Friendli Dedicated Endpoint from a Weights & Biases
+            artifact via the API. Deploy W&B-managed models directly to dedicated
+            GPU hardware.
+          og:description: Create a Friendli Dedicated Endpoint from a Weights & Biases
+            artifact via the API. Deploy W&B-managed models directly to dedicated
+            GPU hardware.
+        href: /openapi/dedicated/endpoint/wandb-artifact-create
+        content: 'Create an endpoint from Weights & Biases artifact.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.'
+  /dedicated/beta/endpoint:
+    post:
+      tags:
+        - Dedicated.Endpoint
+      summary: Create a new endpoint
+      description: Create a new endpoint and return its status
+      operationId: dedicatedCreateEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DedicatedEndpointCreateBody'
+      responses:
+        '200':
+          description: Successfully created the endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: INITIALIZING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+                    phase: DOWNLOADING_MODEL
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+      x-speakeasy-name-override: create
+      x-mint:
+        metadata:
+          title: Dedicated Create Endpoint
+          sidebarTitle: Create an Endpoint with Hugging Face Model
+          og:title: Dedicated Create Endpoint
+          description: Create a Friendli Dedicated Endpoint deployment for a Hugging
+            Face model via the API. Specify GPU type, replica count, and model configuration.
+          og:description: Create a Friendli Dedicated Endpoint deployment for a Hugging
+            Face model via the API. Specify GPU type, replica count, and model configuration.
+        href: /openapi/dedicated/endpoint/create
+        content: 'Create a Dedicated Endpoint deployment for a Hugging Face model.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+    get:
+      tags:
+        - Dedicated.Endpoint
+      summary: List all endpoints
+      description: List all endpoint statuses
+      operationId: dedicatedListEndpoints
+      security:
+        - token: []
+      parameters:
+        - name: project_id
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: The ID of the project. If omitted, query all endpoints under
+              the team.
+            default: ''
+            title: Project Id
+          description: The ID of the project. If omitted, query all endpoints under
+            the team.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                format: binary
+              - type: 'null'
+            description: Cursor for pagination.
+            title: Cursor
+          description: Cursor for pagination.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+                maximum: 100
+                minimum: 1
+              - type: 'null'
+            description: Limit of items per page.
+            default: 20
+            title: Limit
+          description: Limit of items per page.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully listed endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointListResponse'
+              examples:
+                Example:
+                  value:
+                    data:
+                      endpoint-id-1:
+                        status: INITIALIZING
+                        createdAt: '2025-01-01T00:00:00Z'
+                        updatedAt: '2025-01-01T00:00:00Z'
+                        phase: DOWNLOADING_MODEL
+                      endpoint-id-2:
+                        status: RUNNING
+                        createdAt: '2025-01-01T00:00:00Z'
+                        updatedAt: '2025-01-01T00:00:00Z'
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: list
+      x-mint:
+        metadata:
+          title: Dedicated List Endpoints
+          sidebarTitle: List Endpoints
+          og:title: Dedicated List Endpoints
+          description: List all Friendli Dedicated Endpoint deployments in your project.
+            Returns endpoint IDs, statuses, model names, and GPU configurations.
+          og:description: List all Friendli Dedicated Endpoint deployments in your
+            project. Returns endpoint IDs, statuses, model names, and GPU configurations.
+        href: /openapi/dedicated/endpoint/list
+        content: 'List Dedicated Endpoint deployments.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}:
+    get:
+      tags:
+        - Dedicated.Endpoint
+      summary: Get endpoint specification
+      description: Get the specification of an endpoint
+      operationId: dedicatedGetEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully retrieved the endpoint specification.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointSpec'
+              examples:
+                Example:
+                  value:
+                    name: endpoint-name
+                    gpuType: NVIDIA H100
+                    numGpu: 1
+                    instanceId: instance-id
+                    projectId: project-id
+                    creatorId: creator-id
+                    teamId: team-id
+                    autoscalingMin: 0
+                    autoscalingMax: 1
+                    autoscalingCooldown: 300
+                    maxBatchSize: 10
+                    maxInputLength: 1024
+                    tokenizerSkipSpecialTokens: true
+                    tokenizerAddSpecialTokens: true
+                    currReplicaCnt: 1
+                    desiredReplicaCnt: 1
+                    updatedReplicaCnt: 1
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: getSpec
+      x-mint:
+        metadata:
+          title: Dedicated Get Endpoint
+          sidebarTitle: Retrieve an Endpoint Specification
+          og:title: Dedicated Get Endpoint
+          description: Retrieve the full specification of a Friendli Dedicated Endpoint
+            by ID, including model config, GPU type, replica count, and deployment
+            settings.
+          og:description: Retrieve the full specification of a Friendli Dedicated
+            Endpoint by ID, including model config, GPU type, replica count, and deployment
+            settings.
+        href: /openapi/dedicated/endpoint/get-spec
+        content: 'Given an endpoint ID, return its specification.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+    put:
+      tags:
+        - Dedicated.Endpoint
+      summary: Update endpoint spec
+      description: Update the specification of a specific endpoint
+      operationId: dedicatedUpdateEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DedicatedEndpointUpdateBody'
+      responses:
+        '200':
+          description: Successfully updated the endpoint specification.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointSpec'
+              examples:
+                Example:
+                  value:
+                    name: endpoint-name
+                    gpuType: NVIDIA H100
+                    numGpu: 1
+                    instanceId: instance-id
+                    projectId: project-id
+                    creatorId: creator-id
+                    teamId: team-id
+                    autoscalingMin: 0
+                    autoscalingMax: 1
+                    autoscalingCooldown: 300
+                    maxBatchSize: 10
+                    maxInputLength: 1024
+                    tokenizerSkipSpecialTokens: true
+                    tokenizerAddSpecialTokens: true
+                    currReplicaCnt: 1
+                    desiredReplicaCnt: 1
+                    updatedReplicaCnt: 1
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: update
+      x-mint:
+        metadata:
+          title: Dedicated Update Endpoint
+          sidebarTitle: Update an Endpoint with New Configuration
+          og:title: Dedicated Update Endpoint
+          description: Update a Friendli Dedicated Endpoint with a new model, GPU
+            type, or replica count. Changes are applied as a new version in the deployment
+            history.
+          og:description: Update a Friendli Dedicated Endpoint with a new model, GPU
+            type, or replica count. Changes are applied as a new version in the deployment
+            history.
+        href: /openapi/dedicated/endpoint/update
+        content: 'Update a Dedicated Endpoint deployment with new configuration.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+    delete:
+      tags:
+        - Dedicated.Endpoint
+      summary: Delete endpoint
+      description: Delete a specific endpoint
+      operationId: dedicatedDeleteEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      x-speakeasy-name-override: delete
+      x-mint:
+        metadata:
+          title: Dedicated Delete Endpoint
+          sidebarTitle: Delete an Endpoint
+          og:title: Dedicated Delete Endpoint
+          description: Permanently delete a Friendli Dedicated Endpoint deployment
+            by ID. This stops the endpoint and releases all associated GPU resources
+            immediately.
+          og:description: Permanently delete a Friendli Dedicated Endpoint deployment
+            by ID. This stops the endpoint and releases all associated GPU resources
+            immediately.
+        href: /openapi/dedicated/endpoint/delete
+        content: 'Delete an endpoint.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/version:
+    get:
+      tags:
+        - Dedicated.Endpoint
+      summary: Get endpoint version history
+      description: Get version history of a specific endpoint
+      operationId: dedicatedGetEndpointVersionHistory
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                format: binary
+              - type: 'null'
+            description: Cursor for pagination.
+            title: Cursor
+          description: Cursor for pagination.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+                maximum: 100
+                minimum: 1
+              - type: 'null'
+            description: Limit of items per page.
+            default: 20
+            title: Limit
+          description: Limit of items per page.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully retrieved the endpoint version history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointVersionHistoryResponse'
+              examples:
+                Example:
+                  value:
+                    data:
+                      '0':
+                        name: endpoint-name
+                        gpuType: NVIDIA H100
+                        numGpu: 1
+                        instanceId: instance-id
+                        projectId: project-id
+                        creatorId: creator-id
+                        teamId: team-id
+                        autoscalingMin: 0
+                        autoscalingMax: 1
+                        autoscalingCooldown: 300
+                        maxBatchSize: 10
+                        maxInputLength: 1024
+                        tokenizerSkipSpecialTokens: true
+                        tokenizerAddSpecialTokens: true
+                        currReplicaCnt: 1
+                        desiredReplicaCnt: 1
+                        updatedReplicaCnt: 1
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: getVersionHistory
+      x-mint:
+        metadata:
+          title: Dedicated Get Endpoint Version
+          sidebarTitle: Retrieve Endpoint Version History
+          og:title: Dedicated Get Endpoint Version
+          description: Retrieve the version history of a Friendli Dedicated Endpoint
+            by ID. View past configurations and rollback points for deployment tracking.
+          og:description: Retrieve the version history of a Friendli Dedicated Endpoint
+            by ID. View past configurations and rollback points for deployment tracking.
+        href: /openapi/dedicated/endpoint/get-version
+        content: 'Given an endpoint ID, return its version history.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/status:
+    get:
+      tags:
+        - Dedicated.Endpoint
+      summary: Get endpoint status
+      description: Get the status of a specific endpoint
+      operationId: dedicatedGetEndpointStatus
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully retrieved the endpoint status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: INITIALIZING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+                    phase: DOWNLOADING_MODEL
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: getStatus
+      x-mint:
+        metadata:
+          title: Dedicated Get Endpoint Status
+          sidebarTitle: Retrieve an Endpoint Status
+          og:title: Dedicated Get Endpoint Status
+          description: Check the current status of a Friendli Dedicated Endpoint by
+            ID. Returns the lifecycle state such as running, sleeping, initializing,
+            or terminated.
+          og:description: Check the current status of a Friendli Dedicated Endpoint
+            by ID. Returns the lifecycle state such as running, sleeping, initializing,
+            or terminated.
+        href: /openapi/dedicated/endpoint/get-status
+        content: 'Given an endpoint ID, return its current status.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/sleep:
+    put:
+      tags:
+        - Dedicated.Endpoint
+      summary: Sleep endpoint
+      description: Put a specific endpoint to sleep
+      operationId: dedicatedSleepEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully requested to put the endpoint to sleep.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: SLEEPING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: sleep
+      x-mint:
+        metadata:
+          title: Dedicated Sleep Endpoint
+          sidebarTitle: Sleep an Endpoint
+          og:title: Dedicated Sleep Endpoint
+          description: Put a Friendli Dedicated Endpoint into sleep mode by ID. The
+            endpoint stops serving but retains its configuration for quick wake-up
+            later.
+          og:description: Put a Friendli Dedicated Endpoint into sleep mode by ID.
+            The endpoint stops serving but retains its configuration for quick wake-up
+            later.
+        href: /openapi/dedicated/endpoint/sleep
+        content: 'Put a Dedicated Endpoint to sleep mode.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/wake:
+    put:
+      tags:
+        - Dedicated.Endpoint
+      summary: Wake endpoint
+      description: Wake up a specific endpoint
+      operationId: dedicatedWakeEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully requested to wake up the endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: AWAKING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+                    phase: ENGINE_INITIALIZING
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+      x-speakeasy-name-override: wake
+      x-mint:
+        metadata:
+          title: Dedicated Wake Endpoint
+          sidebarTitle: Wake Up an Endpoint
+          og:title: Dedicated Wake Endpoint
+          description: Wake up a sleeping Friendli Dedicated Endpoint by ID. The endpoint
+            resumes serving with its previous model and GPU configuration intact.
+          og:description: Wake up a sleeping Friendli Dedicated Endpoint by ID. The
+            endpoint resumes serving with its previous model and GPU configuration
+            intact.
+        href: /openapi/dedicated/endpoint/wake
+        content: 'Wake up a sleeping Dedicated Endpoint.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/terminate:
+    put:
+      tags:
+        - Dedicated.Endpoint
+      summary: Terminate endpoint
+      description: Terminate a specific endpoint
+      operationId: dedicatedTerminateEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully requested to terminate the endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: TERMINATING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+      x-speakeasy-name-override: terminate
+      x-mint:
+        metadata:
+          title: Dedicated Terminate Endpoint
+          sidebarTitle: Terminate an Endpoint
+          og:title: Dedicated Terminate Endpoint
+          description: Terminate a running Friendli Dedicated Endpoint by ID. Stops
+            all inference and releases GPU resources while preserving the endpoint
+            configuration.
+          og:description: Terminate a running Friendli Dedicated Endpoint by ID. Stops
+            all inference and releases GPU resources while preserving the endpoint
+            configuration.
+        href: /openapi/dedicated/endpoint/terminate
+        content: 'Terminate an endpoint.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
+  /dedicated/beta/endpoint/{endpoint_id}/restart:
+    put:
+      tags:
+        - Dedicated.Endpoint
+      summary: Restart endpoint
+      description: Restart a FAILED or TERMINATED endpoint
+      operationId: dedicatedRestartEndpoint
+      security:
+        - token: []
+      parameters:
+        - name: endpoint_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The ID of the endpoint.
+            title: Endpoint Id
+          description: The ID of the endpoint.
+        - name: X-Friendli-Team
+          in: header
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: ID of team to run requests as (optional parameter).
+            title: X-Friendli-Team
+          description: ID of team to run requests as (optional parameter).
+      responses:
+        '200':
+          description: Successfully requested to restart the endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedicatedEndpointStatus'
+              examples:
+                Example:
+                  value:
+                    status: INITIALIZING
+                    createdAt: '2025-01-01T00:00:00Z'
+                    updatedAt: '2025-01-01T00:00:00Z'
+                    phase: DOWNLOADING_MODEL
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+      x-speakeasy-name-override: restart
+      x-mint:
+        metadata:
+          title: Dedicated Restart Endpoint
+          sidebarTitle: Restart an Endpoint
+          og:title: Dedicated Restart Endpoint
+          description: Restart a failed or terminated Friendli Dedicated Endpoint
+            by ID. The endpoint re-initializes with the same model and GPU configuration.
+          og:description: Restart a failed or terminated Friendli Dedicated Endpoint
+            by ID. The endpoint re-initializes with the same model and GPU configuration.
+        href: /openapi/dedicated/endpoint/restart
+        content: 'Restart a failed or terminated Dedicated Endpoint.
+
+
+          To request successfully, it is mandatory to enter a **Personal API Key**
+          (e.g. flp_XXX) value in the **Bearer Token** field.
+
+          Refer to the [authentication section](/openapi/introduction#authentication)
+          on our introduction page to learn how to acquire this variable and [visit
+          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
+
+
+          <Info>
+
+          This API is currently in **Beta**.
+
+          While we strive to provide a stable and reliable experience, this feature
+          is still under active development.
+
+          As a result, you may encounter unexpected behavior or limitations.
+
+          We encourage you to provide feedback to help us improve the feature before
+          its official release.
+
+
+          - [Feature request & feedback](mailto:support@friendli.ai)
+
+          - [Contact support](mailto:support@friendli.ai)
+
+
+          </Info>'
   /v1/team/cost:
     get:
       tags:
@@ -4157,11 +5450,9 @@ paths:
           in: query
           required: false
           schema:
-            anyOf:
-              - type: integer
-                maximum: 35
-                minimum: 1
-              - type: 'null'
+            type: integer
+            maximum: 35
+            minimum: 1
             description: A limit on the number of buckets to be returned. Limit can
               range between 1 and 35, and the default is 7.
             default: 7
@@ -4211,15 +5502,14 @@ paths:
                 $ref: '#/components/schemas/CostResponse'
               example:
                 data:
-                  - has_more: true
-                    data:
-                      - start_time: '2023-11-07T05:31:56Z'
-                        end_time: '2023-11-07T05:31:56Z'
-                        results:
-                          - total: '2.709083'
-                            quantity: '0.934167'
-                            unit_price: '290'
-                            line_item: '{endpoint_id}, {gpu_type}, gpu time cost'
+                  - start_time: '2023-11-07T00:00:00Z'
+                    end_time: '2023-11-08T00:00:00Z'
+                    results:
+                      - total: '2.709083'
+                        quantity: '0.934167'
+                        unit_price: '290'
+                        line_item: '{endpoint_id}, {gpu_type}, gpu time cost'
+                has_more: true
         '429':
           description: Rate limit exceeded
         '422':
@@ -4429,30 +5719,27 @@ paths:
               example:
                 has_more: false
                 data:
-                  - start_time: '2023-11-07T00:00:00Z'
-                    end_time: '2023-11-08T00:00:00Z'
+                  - start_time: '2026-07-21T00:00:00Z'
+                    end_time: '2026-07-22T00:00:00Z'
                     results:
-                      - num_model_requests: 1200
-                        input_tokens: 180000
-                        input_cached_tokens: 45000
-                        output_tokens: 62000
-                        product_type: model_apis
+                      - product_type: model_apis
                         model: zai-org/GLM-5.2
                         user_id: user_id_123
+                        num_model_requests: 9820
+                        input_tokens: 291279167
+                        input_cached_tokens: 268415808
+                        output_tokens: 2104547
                         processed_audio_length_ms: 0
-                  - start_time: '2023-11-08T00:00:00Z'
-                    end_time: '2023-11-09T00:00:00Z'
-                    results:
-                      - num_model_requests: 800
-                        input_tokens: 120000
-                        input_cached_tokens: 30000
-                        output_tokens: 41000
-                        product_type: dedicated_endpoints
-                        model: dedicated-endpoint-01
-                        user_id: user_id_456
+                      - product_type: dedicated_endpoints
+                        model: dedicated_endpoint_id
+                        user_id: user_id_123
+                        num_model_requests: 0
+                        input_tokens: 0
+                        input_cached_tokens: 0
+                        output_tokens: 0
                         gpu_usage:
-                          a100: 120000
-                          h100: 80000
+                          b200: 606
+                          b300: 844
                         processed_audio_length_ms: 0
         '400':
           description: Invalid request parameters
@@ -4482,1244 +5769,6 @@ paths:
           Refer to the [authentication section](/openapi/introduction#authentication)
           on our introduction page to learn how to acquire this variable and [visit
           here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.'
-  /serverless/v1/knowledge/retrieve:
-    post:
-      tags:
-        - Serverless.Knowledge
-      summary: Retrieve contexts from chosen knowledge base
-      description: Retrieve related documents from knowledge base by similarity.
-      operationId: serverlessKnowledgeRetrieve
-      security:
-        - token: []
-      parameters:
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ServerlessKnowledgeRetrievalBody'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServerlessKnowledgeRetrievalSuccess'
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: retrieve
-      x-speakeasy-ignore: true
-  /serverless/v1/models:
-    get:
-      tags:
-        - Serverless.Model
-      summary: Retrieve serverless models
-      description: Retrieve list of serverless models.
-      operationId: serverlessModelList
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServerlessModelListSuccess'
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: list
-      x-speakeasy-ignore: true
-  /serverless/v1/openrouter/models:
-    get:
-      tags:
-        - Serverless.Model
-      summary: Retrieve serverless models for OpenRouter
-      description: Retrieve list of serverless models for OpenRouter integration.
-      operationId: serverlessOpenrouterModelList
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OpenRouterModelListSuccess'
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: listOpenrouter
-      x-speakeasy-ignore: true
-  /dedicated/endpoint/wandb-artifact-create:
-    post:
-      tags:
-        - Dedicated.Endpoint
-      summary: Create endpoint from W&B artifact
-      description: Create an endpoint from Weights & Biases artifact. If the idempotency
-        key is provided, the API will check if the endpoint already exists, and rollout
-        the existing endpoint if it does. In such cases, the project id must be provided.
-      operationId: dedicatedEndpointWandbArtifactCreate
-      security:
-        - token: []
-      parameters:
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DedicatedEndpointWandbArtifactCreateBody'
-      responses:
-        '200':
-          description: Successfully created the endpoint from W&B artifact.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointWandbArtifactCreateResponse'
-              examples:
-                Example:
-                  value:
-                    endpointId: endpoint-id
-                    endpointName: endpoint-name
-                    projectId: project-id
-                    projectName: project-name
-                    teamId: team-id
-                    teamName: team-name
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: wandbArtifactCreate
-      x-mint:
-        metadata:
-          title: Dedicated Create Endpoint from W&B Artifact
-          sidebarTitle: Create Endpoint from W&B Artifact
-          og:title: Dedicated Create Endpoint from W&B Artifact
-          description: Create a Friendli Dedicated Endpoint from a Weights & Biases
-            artifact via the API. Deploy W&B-managed models directly to dedicated
-            GPU hardware.
-          og:description: Create a Friendli Dedicated Endpoint from a Weights & Biases
-            artifact via the API. Deploy W&B-managed models directly to dedicated
-            GPU hardware.
-        href: /openapi/dedicated/endpoint/wandb-artifact-create
-        content: 'Create an endpoint from Weights & Biases artifact.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.'
-  /dedicated/beta/endpoint:
-    post:
-      tags:
-        - Dedicated.Endpoint
-      summary: Create a new endpoint
-      description: Create a new endpoint and return its status
-      operationId: dedicatedCreateEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DedicatedEndpointCreateBody'
-      responses:
-        '200':
-          description: Successfully created the endpoint.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: INITIALIZING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-                    phase: DOWNLOADING_MODEL
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-        '500':
-          description: Internal Server Error
-      x-speakeasy-name-override: create
-      x-mint:
-        metadata:
-          title: Dedicated Create Endpoint
-          sidebarTitle: Create an Endpoint with Hugging Face Model
-          og:title: Dedicated Create Endpoint
-          description: Create a Friendli Dedicated Endpoint deployment for a Hugging
-            Face model via the API. Specify GPU type, replica count, and model configuration.
-          og:description: Create a Friendli Dedicated Endpoint deployment for a Hugging
-            Face model via the API. Specify GPU type, replica count, and model configuration.
-        href: /openapi/dedicated/endpoint/create
-        content: 'Create a Dedicated Endpoint deployment for a Hugging Face model.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-    get:
-      tags:
-        - Dedicated.Endpoint
-      summary: List all endpoints
-      description: List all endpoint statuses
-      operationId: dedicatedListEndpoints
-      security:
-        - token: []
-      parameters:
-        - name: project_id
-          in: query
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: The ID of the project. If omitted, query all endpoints under
-              the team.
-            default: ''
-            title: Project Id
-          description: The ID of the project. If omitted, query all endpoints under
-            the team.
-        - name: cursor
-          in: query
-          required: false
-          schema:
-            anyOf:
-              - type: string
-                format: binary
-              - type: 'null'
-            description: Cursor for pagination
-            title: Cursor
-          description: Cursor for pagination
-        - name: limit
-          in: query
-          required: false
-          schema:
-            anyOf:
-              - type: integer
-                maximum: 100
-                minimum: 1
-              - type: 'null'
-            description: Limit of items per page
-            default: 20
-            title: Limit
-          description: Limit of items per page
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully listed endpoints.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointListResponse'
-              examples:
-                Example:
-                  value:
-                    data:
-                      endpoint-id-1:
-                        status: INITIALIZING
-                        createdAt: '2025-01-01T00:00:00Z'
-                        updatedAt: '2025-01-01T00:00:00Z'
-                        phase: DOWNLOADING_MODEL
-                      endpoint-id-2:
-                        status: RUNNING
-                        createdAt: '2025-01-01T00:00:00Z'
-                        updatedAt: '2025-01-01T00:00:00Z'
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: list
-      x-mint:
-        metadata:
-          title: Dedicated List Endpoints
-          sidebarTitle: List Endpoints
-          og:title: Dedicated List Endpoints
-          description: List all Friendli Dedicated Endpoint deployments in your project.
-            Returns endpoint IDs, statuses, model names, and GPU configurations.
-          og:description: List all Friendli Dedicated Endpoint deployments in your
-            project. Returns endpoint IDs, statuses, model names, and GPU configurations.
-        href: /openapi/dedicated/endpoint/list
-        content: 'List Dedicated Endpoint deployments.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}:
-    get:
-      tags:
-        - Dedicated.Endpoint
-      summary: Get endpoint specification
-      description: Get the specification of an endpoint
-      operationId: dedicatedGetEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully retrieved the endpoint specification.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointSpec'
-              examples:
-                Example:
-                  value:
-                    name: endpoint-name
-                    gpuType: NVIDIA H100
-                    numGpu: 1
-                    instanceId: instance-id
-                    projectId: project-id
-                    creatorId: creator-id
-                    teamId: team-id
-                    autoscalingMin: 0
-                    autoscalingMax: 1
-                    autoscalingCooldown: 300
-                    maxBatchSize: 10
-                    maxInputLength: 1024
-                    tokenizerSkipSpecialTokens: true
-                    tokenizerAddSpecialTokens: true
-                    currReplicaCnt: 1
-                    desiredReplicaCnt: 1
-                    updatedReplicaCnt: 1
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: getSpec
-      x-mint:
-        metadata:
-          title: Dedicated Get Endpoint
-          sidebarTitle: Retrieve an Endpoint Specification
-          og:title: Dedicated Get Endpoint
-          description: Retrieve the full specification of a Friendli Dedicated Endpoint
-            by ID, including model config, GPU type, replica count, and deployment
-            settings.
-          og:description: Retrieve the full specification of a Friendli Dedicated
-            Endpoint by ID, including model config, GPU type, replica count, and deployment
-            settings.
-        href: /openapi/dedicated/endpoint/get-spec
-        content: 'Given an endpoint ID, return its specification.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-    put:
-      tags:
-        - Dedicated.Endpoint
-      summary: Update endpoint spec
-      description: Update the specification of a specific endpoint
-      operationId: dedicatedUpdateEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DedicatedEndpointUpdateBody'
-      responses:
-        '200':
-          description: Successfully updated the endpoint specification.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointSpec'
-              examples:
-                Example:
-                  value:
-                    name: endpoint-name
-                    gpuType: NVIDIA H100
-                    numGpu: 1
-                    instanceId: instance-id
-                    projectId: project-id
-                    creatorId: creator-id
-                    teamId: team-id
-                    autoscalingMin: 0
-                    autoscalingMax: 1
-                    autoscalingCooldown: 300
-                    maxBatchSize: 10
-                    maxInputLength: 1024
-                    tokenizerSkipSpecialTokens: true
-                    tokenizerAddSpecialTokens: true
-                    currReplicaCnt: 1
-                    desiredReplicaCnt: 1
-                    updatedReplicaCnt: 1
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: update
-      x-mint:
-        metadata:
-          title: Dedicated Update Endpoint
-          sidebarTitle: Update an Endpoint with New Configuration
-          og:title: Dedicated Update Endpoint
-          description: Update a Friendli Dedicated Endpoint with a new model, GPU
-            type, or replica count. Changes are applied as a new version in the deployment
-            history.
-          og:description: Update a Friendli Dedicated Endpoint with a new model, GPU
-            type, or replica count. Changes are applied as a new version in the deployment
-            history.
-        href: /openapi/dedicated/endpoint/update
-        content: 'Update a Dedicated Endpoint deployment with new configuration.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-    delete:
-      tags:
-        - Dedicated.Endpoint
-      summary: Delete endpoint
-      description: Delete a specific endpoint
-      operationId: dedicatedDeleteEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      x-speakeasy-name-override: delete
-      x-mint:
-        metadata:
-          title: Dedicated Delete Endpoint
-          sidebarTitle: Delete an Endpoint
-          og:title: Dedicated Delete Endpoint
-          description: Permanently delete a Friendli Dedicated Endpoint deployment
-            by ID. This stops the endpoint and releases all associated GPU resources
-            immediately.
-          og:description: Permanently delete a Friendli Dedicated Endpoint deployment
-            by ID. This stops the endpoint and releases all associated GPU resources
-            immediately.
-        href: /openapi/dedicated/endpoint/delete
-        content: 'Delete an endpoint.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/version:
-    get:
-      tags:
-        - Dedicated.Endpoint
-      summary: Get endpoint version history
-      description: Get version history of a specific endpoint
-      operationId: dedicatedGetEndpointVersionHistory
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: cursor
-          in: query
-          required: false
-          schema:
-            anyOf:
-              - type: string
-                format: binary
-              - type: 'null'
-            description: Cursor for pagination
-            title: Cursor
-          description: Cursor for pagination
-        - name: limit
-          in: query
-          required: false
-          schema:
-            anyOf:
-              - type: integer
-                maximum: 100
-                minimum: 1
-              - type: 'null'
-            description: Limit of items per page
-            default: 20
-            title: Limit
-          description: Limit of items per page
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully retrieved the endpoint version history.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointVersionHistoryResponse'
-              examples:
-                Example:
-                  value:
-                    data:
-                      '0':
-                        name: endpoint-name
-                        gpuType: NVIDIA H100
-                        numGpu: 1
-                        instanceId: instance-id
-                        projectId: project-id
-                        creatorId: creator-id
-                        teamId: team-id
-                        autoscalingMin: 0
-                        autoscalingMax: 1
-                        autoscalingCooldown: 300
-                        maxBatchSize: 10
-                        maxInputLength: 1024
-                        tokenizerSkipSpecialTokens: true
-                        tokenizerAddSpecialTokens: true
-                        currReplicaCnt: 1
-                        desiredReplicaCnt: 1
-                        updatedReplicaCnt: 1
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: getVersionHistory
-      x-mint:
-        metadata:
-          title: Dedicated Get Endpoint Version
-          sidebarTitle: Retrieve Endpoint Version History
-          og:title: Dedicated Get Endpoint Version
-          description: Retrieve the version history of a Friendli Dedicated Endpoint
-            by ID. View past configurations and rollback points for deployment tracking.
-          og:description: Retrieve the version history of a Friendli Dedicated Endpoint
-            by ID. View past configurations and rollback points for deployment tracking.
-        href: /openapi/dedicated/endpoint/get-version
-        content: 'Given an endpoint ID, return its version history.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/status:
-    get:
-      tags:
-        - Dedicated.Endpoint
-      summary: Get endpoint status
-      description: Get the status of a specific endpoint
-      operationId: dedicatedGetEndpointStatus
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully retrieved the endpoint status.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: INITIALIZING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-                    phase: DOWNLOADING_MODEL
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: getStatus
-      x-mint:
-        metadata:
-          title: Dedicated Get Endpoint Status
-          sidebarTitle: Retrieve an Endpoint Status
-          og:title: Dedicated Get Endpoint Status
-          description: Check the current status of a Friendli Dedicated Endpoint by
-            ID. Returns the lifecycle state such as running, sleeping, initializing,
-            or terminated.
-          og:description: Check the current status of a Friendli Dedicated Endpoint
-            by ID. Returns the lifecycle state such as running, sleeping, initializing,
-            or terminated.
-        href: /openapi/dedicated/endpoint/get-status
-        content: 'Given an endpoint ID, return its current status.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/sleep:
-    put:
-      tags:
-        - Dedicated.Endpoint
-      summary: Sleep endpoint
-      description: Put a specific endpoint to sleep
-      operationId: dedicatedSleepEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully requested to put the endpoint to sleep.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: SLEEPING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: sleep
-      x-mint:
-        metadata:
-          title: Dedicated Sleep Endpoint
-          sidebarTitle: Sleep an Endpoint
-          og:title: Dedicated Sleep Endpoint
-          description: Put a Friendli Dedicated Endpoint into sleep mode by ID. The
-            endpoint stops serving but retains its configuration for quick wake-up
-            later.
-          og:description: Put a Friendli Dedicated Endpoint into sleep mode by ID.
-            The endpoint stops serving but retains its configuration for quick wake-up
-            later.
-        href: /openapi/dedicated/endpoint/sleep
-        content: 'Put a Dedicated Endpoint to sleep mode.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/wake:
-    put:
-      tags:
-        - Dedicated.Endpoint
-      summary: Wake endpoint
-      description: Wake up a specific endpoint
-      operationId: dedicatedWakeEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully requested to wake up the endpoint.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: AWAKING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-                    phase: ENGINE_INITIALIZING
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-        '500':
-          description: Internal Server Error
-      x-speakeasy-name-override: wake
-      x-mint:
-        metadata:
-          title: Dedicated Wake Endpoint
-          sidebarTitle: Wake Up an Endpoint
-          og:title: Dedicated Wake Endpoint
-          description: Wake up a sleeping Friendli Dedicated Endpoint by ID. The endpoint
-            resumes serving with its previous model and GPU configuration intact.
-          og:description: Wake up a sleeping Friendli Dedicated Endpoint by ID. The
-            endpoint resumes serving with its previous model and GPU configuration
-            intact.
-        href: /openapi/dedicated/endpoint/wake
-        content: 'Wake up a sleeping Dedicated Endpoint.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/terminate:
-    put:
-      tags:
-        - Dedicated.Endpoint
-      summary: Terminate endpoint
-      description: Terminate a specific endpoint
-      operationId: dedicatedTerminateEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully requested to terminate the endpoint.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: TERMINATING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-      x-speakeasy-name-override: terminate
-      x-mint:
-        metadata:
-          title: Dedicated Terminate Endpoint
-          sidebarTitle: Terminate an Endpoint
-          og:title: Dedicated Terminate Endpoint
-          description: Terminate a running Friendli Dedicated Endpoint by ID. Stops
-            all inference and releases GPU resources while preserving the endpoint
-            configuration.
-          og:description: Terminate a running Friendli Dedicated Endpoint by ID. Stops
-            all inference and releases GPU resources while preserving the endpoint
-            configuration.
-        href: /openapi/dedicated/endpoint/terminate
-        content: 'Terminate an endpoint.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
-  /dedicated/beta/endpoint/{endpoint_id}/restart:
-    put:
-      tags:
-        - Dedicated.Endpoint
-      summary: Restart endpoint
-      description: Restart a FAILED or TERMINATED endpoint
-      operationId: dedicatedRestartEndpoint
-      security:
-        - token: []
-      parameters:
-        - name: endpoint_id
-          in: path
-          required: true
-          schema:
-            type: string
-            description: The ID of the endpoint
-            title: Endpoint Id
-          description: The ID of the endpoint
-        - name: X-Friendli-Team
-          in: header
-          required: false
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            description: ID of team to run requests as (optional parameter).
-            title: X-Friendli-Team
-          description: ID of team to run requests as (optional parameter).
-      responses:
-        '200':
-          description: Successfully requested to restart the endpoint.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DedicatedEndpointStatus'
-              examples:
-                Example:
-                  value:
-                    status: INITIALIZING
-                    createdAt: '2025-01-01T00:00:00Z'
-                    updatedAt: '2025-01-01T00:00:00Z'
-                    phase: DOWNLOADING_MODEL
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '422':
-          description: Unprocessable Entity
-        '500':
-          description: Internal Server Error
-      x-speakeasy-name-override: restart
-      x-mint:
-        metadata:
-          title: Dedicated Restart Endpoint
-          sidebarTitle: Restart an Endpoint
-          og:title: Dedicated Restart Endpoint
-          description: Restart a failed or terminated Friendli Dedicated Endpoint
-            by ID. The endpoint re-initializes with the same model and GPU configuration.
-          og:description: Restart a failed or terminated Friendli Dedicated Endpoint
-            by ID. The endpoint re-initializes with the same model and GPU configuration.
-        href: /openapi/dedicated/endpoint/restart
-        content: 'Restart a failed or terminated Dedicated Endpoint.
-
-
-          To request successfully, it is mandatory to enter a **Personal API Key**
-          (e.g. flp_XXX) value in the **Bearer Token** field.
-
-          Refer to the [authentication section](/openapi/introduction#authentication)
-          on our introduction page to learn how to acquire this variable and [visit
-          here](https://friendli.ai/suite/~/setting/keys) to generate your API Key.
-
-
-          <Info>
-
-          This API is currently in **Beta**.
-
-          While we strive to provide a stable and reliable experience, this feature
-          is still under active development.
-
-          As a result, you may encounter unexpected behavior or limitations.
-
-          We encourage you to provide feedback to help us improve the feature before
-          its official release.
-
-
-          - [Feature request & feedback](mailto:support@friendli.ai)
-
-          - [Contact support](mailto:support@friendli.ai)
-
-
-          </Info>'
   /beta/dataset:
     post:
       tags:
@@ -7314,10 +7363,6 @@ paths:
                 $ref: '#/components/schemas/FileInitUploadResponse'
         '202':
           description: Accepted - Return upload URL.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FileInitUploadResponse'
         '422':
           description: Validation Error
           content:
@@ -7380,9 +7425,9 @@ paths:
           required: true
           schema:
             type: string
-            description: File ID
+            description: File ID.
             title: File Id
-          description: File ID
+          description: File ID.
         - name: X-Friendli-Team
           in: header
           required: false
@@ -7462,9 +7507,9 @@ paths:
           required: true
           schema:
             type: string
-            description: File ID
+            description: File ID.
             title: File Id
-          description: File ID
+          description: File ID.
         - name: X-Friendli-Team
           in: header
           required: false
@@ -7557,9 +7602,9 @@ paths:
           required: true
           schema:
             type: string
-            description: File ID
+            description: File ID.
             title: File Id
-          description: File ID
+          description: File ID.
         - name: X-Friendli-Team
           in: header
           required: false
@@ -7736,7 +7781,7 @@ components:
           description: The type of tool call.
         function:
           $ref: '#/components/schemas/AssistantMessageToolCallFunction'
-          description: The function specification
+          description: The function specification.
       type: object
       required:
         - id
@@ -7748,7 +7793,7 @@ components:
         name:
           type: string
           title: Name
-          description: The name of function
+          description: The name of function.
         arguments:
           type: string
           title: Arguments
@@ -8246,12 +8291,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -8373,11 +8419,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -8468,8 +8515,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -8581,12 +8628,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -8708,11 +8756,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -8803,8 +8852,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -8967,12 +9016,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -9094,11 +9144,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -9189,8 +9240,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -9303,12 +9354,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -9430,11 +9482,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -9525,8 +9578,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -9706,12 +9759,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -9833,11 +9887,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -9928,8 +9983,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -10040,12 +10095,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -10167,11 +10223,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -10262,8 +10319,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -10372,12 +10429,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -10499,11 +10557,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -10592,8 +10651,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -10705,12 +10764,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -10832,11 +10892,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -10925,8 +10986,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -11034,12 +11095,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -11161,11 +11223,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -11254,8 +11317,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -11368,12 +11431,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -11495,11 +11559,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -11588,8 +11653,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -11696,12 +11761,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -11823,11 +11889,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -11916,8 +11983,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -12028,12 +12095,13 @@ components:
         encoder_repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Encoder Repetition Penalty
           description: Penalizes tokens that have already appeared in the input tokens.
-            Should be positive value. 1.0 means no penalty. Only allowed for encoder-decoder
-            models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858) for
-            more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
+            Should be a positive value. 1.0 means no penalty and is the default. Only
+            allowed for encoder-decoder models. See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            for more details. This is similar to Hugging Face's [`encoder_repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.GenerationConfig.encoder_repetition_penalty)
             argument.
         eos_token:
           anyOf:
@@ -12155,11 +12223,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         response_format:
@@ -12248,8 +12317,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -12526,11 +12595,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -12666,8 +12736,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -12871,11 +12941,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -13009,8 +13080,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -14118,20 +14189,27 @@ components:
       required:
         - start_time
         - end_time
-        - results
       title: CostBucket
+      description: Cost bucket for a time window.
     CostBucketWidth:
       type: string
       enum:
         - 1d
       title: CostBucketWidth
+      description: Cost bucket width.
     CostGroupBy:
       type: string
       enum:
         - line_item
       title: CostGroupBy
+      description: Cost group-by option.
     CostResponse:
       properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CostBucket'
+          type: array
+          title: Data
         has_more:
           type: boolean
           title: Has More
@@ -14140,16 +14218,12 @@ components:
             - type: string
             - type: 'null'
           title: Next Page
-        data:
-          items:
-            $ref: '#/components/schemas/CostBucket'
-          type: array
-          title: Data
       type: object
       required:
-        - has_more
         - data
+        - has_more
       title: CostResponse
+      description: Cost response.
     CostResult:
       properties:
         total:
@@ -14159,7 +14233,9 @@ components:
           examples:
             - '2.709083'
         quantity:
-          type: string
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Quantity
           description: When `group_by=line_item`, this field provides the quantity
             of the line item. For token-based line items, the unit is Million tokens
@@ -14167,7 +14243,9 @@ components:
           examples:
             - '0.934167'
         unit_price:
-          type: string
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Unit Price
           description: When `group_by=line_item`, this field provides the unit price
             of the line item in USD cents. For token-based line items, the unit is
@@ -14176,7 +14254,9 @@ components:
           examples:
             - '290'
         line_item:
-          type: string
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Line Item
           description: When `group_by=line_item`, this field provides the line item
             name of the grouped costs result.
@@ -14187,6 +14267,7 @@ components:
       required:
         - total
       title: CostResult
+      description: Cost result for a single line item.
     CreateDatasetRequest:
       properties:
         name:
@@ -14476,11 +14557,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -14616,8 +14698,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -14823,11 +14905,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -14961,8 +15044,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -16711,6 +16794,62 @@ components:
       required:
         - tokens
       title: DedicatedTokenizationSuccess
+    DefaultSamplingParams:
+      properties:
+        repetition_penalty:
+          type: number
+          exclusiveMinimum: 0.0
+          title: Repetition Penalty
+          description: Penalizes tokens that have already appeared in the generated
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty). This is similar to Hugging Face's repetition_penalty
+            argument.
+        temperature:
+          type: number
+          minimum: 0.0
+          title: Temperature
+          description: Sampling temperature. Smaller temperature makes the generation
+            result closer to greedy, argmax (i.e., top_k = 1) sampling. This is similar
+            to Hugging Face's temperature argument.
+        top_p:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Top P
+          description: Keeps only the smallest set of tokens whose cumulative probabilities
+            reach top_p or higher. Values range from 0.0 to 1.0 (inclusive). 1.0 includes
+            all tokens, allowing maximum diversity.
+        min_p:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Min P
+          description: A scaling factor used to determine the minimum token probability
+            threshold. This threshold is calculated as min_p multiplied by the probability
+            of the most likely token. Tokens with probabilities below this scaled
+            threshold are excluded from sampling. Values range from 0.0 (inclusive)
+            to 1.0 (inclusive). Higher values result in stricter filtering, while
+            lower values allow for greater diversity. 0.0 disables filtering, allowing
+            all tokens to be considered for sampling.
+        top_k:
+          type: integer
+          minimum: 0.0
+          title: Top K
+          description: Limits sampling to the top k tokens with the highest probabilities.
+            Values range from 0 (no filtering) to the model's vocabulary size (inclusive).
+            0 applies no filtering, allowing all tokens.
+      type: object
+      required:
+        - repetition_penalty
+        - temperature
+        - top_p
+        - min_p
+        - top_k
+      title: DefaultSamplingParams
+      description: 'Default sampling parameters applied when the request omits them.
+
+
+        These are the resolved values used at inference time.'
     DeleteSamplesResponse:
       properties:
         sampleIds:
@@ -17031,23 +17170,32 @@ components:
         tool_call:
           type: boolean
           title: Tool Call
-        builtin_tool:
-          type: boolean
-          title: Built-in Tool
+          description: Whether the model supports tool calling.
         parallel_tool_call:
           type: boolean
-          title: Tool Call Parallel
+          title: Parallel Tool Call
+          description: Whether the model supports parallel function calling.
         structured_output:
           type: boolean
           title: Structured Output
-          default: true
+          description: Whether you can enforce a specific output format.
+        tool_choice:
+          type: boolean
+          title: Tool Choice
+          description: Whether you can control how the model handles tool calling.
+        system_messages:
+          type: boolean
+          title: System Messages
+          description: Whether the model accepts system role messages.
       type: object
       required:
         - tool_call
-        - builtin_tool
         - parallel_tool_call
+        - structured_output
+        - tool_choice
+        - system_messages
       title: Functionality
-      description: Functionality of the model.
+      description: Whether the model supports specific features.
     HTTPValidationError:
       properties:
         detail:
@@ -17168,6 +17316,13 @@ components:
       required:
         - type
       title: IntegratedBuiltInTool
+    InterleavedField:
+      type: string
+      enum:
+        - reasoning_content
+        - reasoning_details
+      title: InterleavedField
+      description: Field name where interleaved reasoning content appears in the response.
     KnowledgeRetrievedChunk:
       properties:
         text:
@@ -18253,60 +18408,185 @@ components:
         - input_tokens
         - output_tokens
       title: MessagesUsage
+    Modality:
+      type: string
+      enum:
+        - text
+        - audio
+        - image
+        - video
+        - pdf
+      title: Modality
+      description: Supported input and output modalities.
+    Mode:
+      type: string
+      enum:
+        - chat
+        - completion
+        - embedding
+      title: Mode
+      description: 'Primary API endpoint type for this model.
+
+
+        ``chat`` routes requests to ``/v1/chat/completions``,
+
+        ``completion`` to ``/v1/completions``, and
+
+        ``embedding`` to ``/v1/embeddings``.'
     ModelCatalogResponseItem:
       properties:
         id:
           type: string
           title: Id
-        hugging_face_id:
-          type: string
-          title: Hugging Face Id
-          description: Required when the model is hosted on Hugging Face
-          default: ''
+          description: Model identifier. Pass this as the `model` field in inference
+            API requests.
+          examples:
+            - zai-org/GLM-5.2
         name:
           type: string
           title: Name
+          description: Display name of the model.
+          examples:
+            - zai-org/GLM-5.2
         created:
           type: integer
           title: Created
+          description: Unix timestamp (seconds) of when Friendli started serving this
+            model on Model APIs. Not the original model release date.
+          examples:
+            - 1781491205
         context_length:
           type: integer
           title: Context Length
+          description: Maximum tokens in a single request, shared between input and
+            output.
+          examples:
+            - 1048576
         max_completion_tokens:
           type: integer
           title: Max Completion Tokens
+          description: Maximum number of tokens the model can generate in a single
+            response (same as max output tokens).
+          examples:
+            - 1048576
         pricing:
           $ref: '#/components/schemas/PricingModel'
           title: Pricing
-          description: Token prices for input and output
+          description: Per-token pricing in USD for input, output, and optional cache
+            or audio usage.
+          examples:
+            - completion: '0.0000044'
+              input: '0.0000014'
+              input_cache_read: '0.00000026'
+              output: '0.0000044'
+              prompt: '0.0000014'
         functionality:
           $ref: '#/components/schemas/Functionality'
-          description: Model functionality
+          description: Which features the model supports, such as tool calling, structured
+            output, and system messages.
+          examples:
+            - parallel_tool_call: true
+              structured_output: true
+              system_messages: true
+              tool_call: true
+              tool_choice: true
         description:
           type: string
           title: Description
+          description: Brief description of the model.
         deprecation_date:
           anyOf:
             - type: string
             - type: 'null'
           title: Deprecation Date
-          description: ISO 8601 UTC hour (YYYY-MM-DDTHH:00:00Z)
-        hugging_face_url:
-          type: string
-          minLength: 1
-          format: uri
-          title: Hugging Face Url
-        license:
-          type: string
-          minLength: 1
-          format: uri
-          title: License
-        discount_to_user:
+          description: Scheduled deprecation date in ISO 8601 UTC (YYYY-MM-DDTHH:00:00Z).
+            The model is inactive once this date has passed.
+        reasoning:
+          type: boolean
+          title: Reasoning
+          description: Whether the model supports reasoning.
+        reasoning_options:
           anyOf:
-            - type: number
+            - items:
+                oneOf:
+                  - $ref: '#/components/schemas/ReasoningToggle'
+                  - $ref: '#/components/schemas/ReasoningEffortOption'
+                  - $ref: '#/components/schemas/ReasoningBudgetTokens'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    budget_tokens: '#/components/schemas/ReasoningBudgetTokens'
+                    effort: '#/components/schemas/ReasoningEffortOption'
+                    toggle: '#/components/schemas/ReasoningToggle'
+              type: array
             - type: 'null'
-          title: Discount To User
-          description: Fractional discount applied to user-facing pricing
+          title: Reasoning Options
+          description: Reasoning controls the model supports, such as toggling it
+            on or off, selecting an effort level, or setting a token budget. A model
+            may support more than one of these at the same time. Present only when
+            reasoning is supported.
+          examples:
+            - - type: toggle
+              - type: effort
+                values:
+                  - high
+                  - max
+              - max: 1048576
+                min: -1
+                type: budget_tokens
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/Modality'
+          type: array
+          title: Input Modalities
+          description: Input types the model accepts, such as text, image, or audio.
+          examples:
+            - - text
+        output_modalities:
+          items:
+            $ref: '#/components/schemas/Modality'
+          type: array
+          title: Output Modalities
+          description: Output types the model can produce, such as text or image.
+          examples:
+            - - text
+        interleaved:
+          anyOf:
+            - type: boolean
+              const: false
+            - $ref: '#/components/schemas/InterleavedField'
+          title: Interleaved
+          description: '`false` means reasoning stays in `content` and cannot be separated.
+            A string (`reasoning_content` or `reasoning_details`) means the model
+            can parse reasoning into a top-level field of that name via `parse_reasoning`.'
+          examples:
+            - reasoning_content
+        base_model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Base Model
+          description: Canonical model identifier from models.dev (e.g. `zhipuai/glm-5.2`).
+          examples:
+            - zhipuai/glm-5.2
+        mode:
+          $ref: '#/components/schemas/Mode'
+          description: Primary API endpoint type for this model.
+          examples:
+            - chat
+        default_params:
+          anyOf:
+            - $ref: '#/components/schemas/DefaultSamplingParams'
+            - type: 'null'
+          title: Default Params
+          description: Default sampling parameters applied at inference time when
+            the request does not specify them.
+          examples:
+            - min_p: 0
+              repetition_penalty: 1
+              temperature: 1
+              top_k: 0
+              top_p: 1
       type: object
       required:
         - id
@@ -18317,8 +18597,15 @@ components:
         - pricing
         - functionality
         - description
-        - hugging_face_url
-        - license
+        - deprecation_date
+        - reasoning
+        - reasoning_options
+        - input_modalities
+        - output_modalities
+        - interleaved
+        - base_model
+        - mode
+        - default_params
       title: ModelCatalogResponseItem
       description: Model listing in `/v1/models` API.
     OpenRouterDatacenter:
@@ -18326,7 +18613,7 @@ components:
         country_code:
           type: string
           title: Country Code
-          description: ISO 3166-1 alpha-2 country code
+          description: ISO 3166-1 alpha-2 country code.
       type: object
       required:
         - country_code
@@ -18340,7 +18627,7 @@ components:
         hugging_face_id:
           type: string
           title: Hugging Face Id
-          description: Required when the model is hosted on Hugging Face
+          description: Required when the model is hosted on Hugging Face.
           default: ''
         name:
           type: string
@@ -18363,7 +18650,7 @@ components:
             - type: string
             - type: 'null'
           title: Quantization
-          description: Model quantization level
+          description: Model quantization level.
         context_length:
           type: integer
           title: Context Length
@@ -18379,7 +18666,7 @@ components:
                 $ref: '#/components/schemas/OpenRouterPricingTier'
               type: array
           title: Pricing
-          description: Token prices in USD per token as strings
+          description: Token prices in USD per token as strings.
         supported_sampling_parameters:
           items:
             type: string
@@ -18400,31 +18687,31 @@ components:
             - type: string
             - type: 'null'
           title: Deprecation Date
-          description: ISO 8601 UTC hour (YYYY-MM-DDTHH:00:00Z)
+          description: ISO 8601 UTC hour (YYYY-MM-DDTHH:00:00Z).
         is_ready:
           anyOf:
             - type: boolean
             - type: 'null'
           title: Is Ready
-          description: Whether the model is ready to serve traffic on OpenRouter
+          description: Whether the model is ready to serve traffic on OpenRouter.
         is_free:
           anyOf:
             - type: boolean
             - type: 'null'
           title: Is Free
-          description: Whether the model is offered as a free endpoint
+          description: Whether the model is offered as a free endpoint.
         discount_to_user:
           anyOf:
             - type: number
             - type: 'null'
           title: Discount To User
-          description: Fractional discount applied to user-facing pricing
+          description: Fractional discount applied to user-facing pricing.
         capacity_tpm:
           anyOf:
             - type: integer
             - type: 'null'
           title: Capacity Tpm
-          description: Input tokens per minute capacity
+          description: Input tokens per minute capacity.
         openrouter:
           anyOf:
             - $ref: '#/components/schemas/OpenRouterModelMetadata'
@@ -18468,7 +18755,7 @@ components:
         slug:
           type: string
           title: Slug
-          description: OpenRouter model slug
+          description: OpenRouter model slug.
       type: object
       required:
         - slug
@@ -18479,33 +18766,33 @@ components:
         prompt:
           type: string
           title: Prompt
-          description: Price per input token in USD
+          description: Price per input token in USD.
         completion:
           type: string
           title: Completion
-          description: Price per output token in USD
+          description: Price per output token in USD.
         image:
           type: string
           title: Image
-          description: Price per image in USD (base tier only)
+          description: Price per image in USD (base tier only).
           default: '0'
         request:
           type: string
           title: Request
-          description: Price per request in USD (base tier only)
+          description: Price per request in USD (base tier only).
           default: '0'
         input_cache_read:
           anyOf:
             - type: string
             - type: 'null'
           title: Input Cache Read
-          description: Price per cached input token read in USD
+          description: Price per cached input token read in USD.
         min_context:
           anyOf:
             - type: integer
             - type: 'null'
           title: Min Context
-          description: Minimum input tokens for this tier to apply
+          description: Minimum input tokens for this tier to apply.
       type: object
       required:
         - prompt
@@ -18517,45 +18804,55 @@ components:
         input:
           type: string
           title: Input
-          description: Price per input token in USD
+          description: Price per 1 input token in USD.
         output:
           type: string
           title: Output
-          description: Price per output token in USD
+          description: Price per 1 output token in USD.
         prompt:
           type: string
           title: Prompt
-          description: Price per input token in USD (alias of input)
+          description: Alias of input. Price per 1 input token in USD.
         completion:
           type: string
           title: Completion
-          description: Price per output token in USD (alias of output)
+          description: Alias of output. Price per 1 output token in USD.
         input_cache_read:
           anyOf:
             - type: string
             - type: 'null'
           title: Input Cache Read
-          description: Price per cached input token read in USD
+          description: Price per 1 cached input token read in USD.
+        cache_write:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Cache Write
+          description: Price per 1 input token written to cache in USD.
         audio_minute:
           anyOf:
             - type: string
             - type: 'null'
           title: Audio Minute
-          description: Price per audio minute in USD
+          description: Price per minute of audio in USD.
       type: object
       required:
         - input
         - output
         - prompt
         - completion
+        - input_cache_read
+        - cache_write
+        - audio_minute
       title: PricingModel
-      description: Pricing model for token-based pricing.
+      description: Pricing for a model, charged per individual token in USD.
     ProductType:
       type: string
       enum:
         - model_apis
         - dedicated_endpoints
       title: ProductType
+      description: Product type.
     PromptTokensDetails:
       properties:
         cached_tokens:
@@ -18576,6 +18873,82 @@ components:
         - QUEUED_PREFILL_TOKENS
       title: QueueBackpressureMetricKind
       description: Queue backpressure metric kind.
+    ReasoningBudgetTokens:
+      properties:
+        type:
+          type: string
+          const: budget_tokens
+          title: Type
+        min:
+          anyOf:
+            - type: integer
+              minimum: -1.0
+            - type: 'null'
+          title: Min
+          description: Minimum reasoning tokens. `-1` means the model reasons without
+            a budget limit.
+        max:
+          anyOf:
+            - type: integer
+              minimum: 0.0
+            - type: 'null'
+          title: Max
+          description: Maximum reasoning token budget.
+      type: object
+      required:
+        - type
+        - min
+        - max
+      title: ReasoningBudgetTokens
+      description: 'Specifies a limit on the number of tokens used for reasoning.
+
+
+        The limit is an integer count of reasoning (thinking) tokens.'
+    ReasoningEffort:
+      type: string
+      enum:
+        - minimal
+        - low
+        - medium
+        - high
+        - xhigh
+        - max
+        - ultracode
+      title: ReasoningEffort
+      description: 'Sets how much reasoning the model does before answering.
+
+
+        This affects reasoning models only, and the available options depend on
+
+        the model.'
+    ReasoningEffortOption:
+      properties:
+        type:
+          type: string
+          const: effort
+          title: Type
+        values:
+          items:
+            $ref: '#/components/schemas/ReasoningEffort'
+          type: array
+          title: Values
+      type: object
+      required:
+        - type
+        - values
+      title: ReasoningEffortOption
+      description: Available reasoning effort levels for this model.
+    ReasoningToggle:
+      properties:
+        type:
+          type: string
+          const: toggle
+          title: Type
+      type: object
+      required:
+        - type
+      title: ReasoningToggle
+      description: Reasoning can be turned on or off.
     ResponseFormat:
       oneOf:
         - $ref: '#/components/schemas/ResponseFormatJsonSchema'
@@ -18621,7 +18994,7 @@ components:
           type: string
           const: json_object
           title: Type
-          description: 'The type of the response format: `json_object`'
+          description: 'The type of the response format: `json_object`.'
       type: object
       required:
         - type
@@ -18632,7 +19005,7 @@ components:
           type: string
           const: json_schema
           title: Type
-          description: 'The type of the response format: `json_schema`'
+          description: 'The type of the response format: `json_schema`.'
         json_schema:
           $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
       type: object
@@ -18658,7 +19031,7 @@ components:
           type: string
           const: regex
           title: Type
-          description: 'The type of the response format: `regex`'
+          description: 'The type of the response format: `regex`.'
         schema:
           type: string
           title: Schema
@@ -18679,7 +19052,7 @@ components:
           type: string
           const: text
           title: Type
-          description: 'The type of the response format: `text`'
+          description: 'The type of the response format: `text`.'
       type: object
       required:
         - type
@@ -19160,7 +19533,6 @@ components:
           anyOf:
             - type: string
               enum:
-                - none
                 - minimal
                 - low
                 - medium
@@ -19171,9 +19543,9 @@ components:
             - type: 'null'
           title: Effort
           description: Constrains effort on reasoning for reasoning models. Currently
-            supported values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`,
-            `max`, and `ultracode`. Reducing reasoning effort can result in faster
-            responses and fewer tokens used on reasoning in a response.
+            supported values are `minimal`, `low`, `medium`, `high`, `xhigh`, `max`,
+            and `ultracode`. Reducing reasoning effort can result in faster responses
+            and fewer tokens used on reasoning in a response.
       type: object
       title: ResponsesReasoningConfig
     ResponsesReasoningItem:
@@ -20160,11 +20532,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -20300,8 +20673,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -20505,11 +20878,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -20643,8 +21017,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -21769,11 +22143,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -21909,8 +22284,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -22096,11 +22471,12 @@ components:
         repetition_penalty:
           anyOf:
             - type: number
+              exclusiveMinimum: 0.0
             - type: 'null'
           title: Repetition Penalty
           description: Penalizes tokens that have already appeared in the generated
-            result (plus the input tokens for decoder-only models). Should be positive
-            value (1.0 means no penalty). See [keskar et al., 2019](https://arxiv.org/abs/1909.05858)
+            result (plus the input tokens for decoder-only models). Should be a positive
+            value (1.0 means no penalty and is the default). See [Keskar et al., 2019](https://arxiv.org/abs/1909.05858)
             for more details. This is similar to Hugging Face's [`repetition_penalty`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/text_generation#transformers.generationconfig.repetition_penalty)
             argument.
         reasoning_effort:
@@ -22234,8 +22610,8 @@ components:
             - type: 'null'
           title: Top P
           description: Keeps only the smallest set of tokens whose cumulative probabilities
-            reach `top_p` or higher. Values range from 0.0 (exclusive) to 1.0 (inclusive).
-            The default value of 1.0 includes all tokens, allowing maximum diversity.
+            reach `top_p` or higher. Values range from 0.0 to 1.0 (inclusive). The
+            default value of 1.0 includes all tokens, allowing maximum diversity.
         xtc_threshold:
           anyOf:
             - type: number
@@ -23041,6 +23417,7 @@ components:
         - end_time
         - results
       title: UsageBucket
+      description: Usage bucket for a time window.
     UsageBucketWidth:
       type: string
       enum:
@@ -23048,6 +23425,7 @@ components:
         - 1h
         - 5m
       title: UsageBucketWidth
+      description: Usage bucket width.
     UsageGroupBy:
       type: string
       enum:
@@ -23055,8 +23433,14 @@ components:
         - product_type
         - user_id
       title: UsageGroupBy
+      description: Usage group-by option.
     UsageResponse:
       properties:
+        data:
+          items:
+            $ref: '#/components/schemas/UsageBucket'
+          type: array
+          title: Data
         has_more:
           type: boolean
           title: Has More
@@ -23065,16 +23449,12 @@ components:
             - type: string
             - type: 'null'
           title: Next Page
-        data:
-          items:
-            $ref: '#/components/schemas/UsageBucket'
-          type: array
-          title: Data
       type: object
       required:
-        - has_more
         - data
+        - has_more
       title: UsageResponse
+      description: Usage response.
     UsageResult:
       properties:
         product_type:
@@ -23104,7 +23484,7 @@ components:
           description: When `group_by=user_id`, this field provides the user ID of
             the grouped usage result.
           examples:
-            - user_id_123
+            - AvBI1gXTuRux
         num_model_requests:
           anyOf:
             - type: integer
@@ -23149,14 +23529,13 @@ components:
               type: object
             - type: 'null'
           title: Gpu Usage
-          description: "The GPU time in seconds, keyed by GPU type. When `group_by=user_id`,\
-            \ this is attributed to the bucket of the user who created the endpoint.\
-            \ When the `gpu_types` filter is set, only Dedicated Endpoints usage is\
-            \ returned, and only GPU time is provided \u2014 per-GPU-type token usage\
-            \ is not yet supported."
+          description: The GPU time in seconds, keyed by GPU type. When `group_by=user_id`,
+            this is attributed to the bucket of the user who created the endpoint.
+            When the `gpu_types` filter is set, only Dedicated Endpoints usage is
+            returned, and only GPU time is provided.
           examples:
-            - a100: 120000
-              h100: 80000
+            - b200: 718
+              b300: 844
         processed_audio_length_ms:
           anyOf:
             - type: integer
@@ -23169,6 +23548,7 @@ components:
             - 300000
       type: object
       title: UsageResult
+      description: Usage result for a single group.
     UserMessage:
       properties:
         role:
@@ -23293,8 +23673,9 @@ components:
   securitySchemes:
     token:
       type: http
-      description: 'When using Friendli Suite API for inference requests, you need
-        to provide a **Friendli Token** for authentication and authorization purposes.
+      description: 'When using Friendli Suite API, you need to provide a **Personal
+        API Key** (e.g. flp_XXX) as a Bearer token for authentication and authorization
+        purposes.
 
 
         For more detailed information, please refer [here](https://friendli.ai/docs/openapi/introduction#authentication).'
