@@ -5512,6 +5512,8 @@ paths:
                 has_more: true
         '429':
           description: Rate limit exceeded
+        '403':
+          description: Forbidden
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: getCost
@@ -5745,6 +5747,8 @@ paths:
           description: Invalid request parameters
         '429':
           description: Rate limit exceeded
+        '403':
+          description: Forbidden
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: getUsage
