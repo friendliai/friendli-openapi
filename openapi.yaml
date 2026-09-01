@@ -52,7 +52,7 @@ paths:
                 Example:
                   value:
                     id: chatcmpl-4b71d12c86d94e719c7e3984a7bb7941
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
                     object: chat.completion
                     choices:
                       - index: 0
@@ -275,7 +275,7 @@ paths:
                       output_tokens_details:
                         reasoning_tokens: 0
                       total_tokens: 20
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: responses
@@ -422,7 +422,7 @@ paths:
                     event: response.completed
 
                     data: {"type":"response.completed","response":{"id":"resp_4b71d12c86d94e719c7e3984a7bb7941","object":"response","created_at":1735722153,"status":"completed","output":[{"type":"message","id":"msg_4b71d12c86d94e719c7e3984a7bb7941","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Hello
-                    there, how may I assist you today?"}]}],"usage":{"input_tokens":9,"input_tokens_details":{"cached_tokens":0},"output_tokens":11,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":20},"model":"zai-org/GLM-5.2"},"sequence_number":11}
+                    there, how may I assist you today?"}]}],"usage":{"input_tokens":9,"input_tokens_details":{"cached_tokens":0},"output_tokens":11,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":20},"model":"zai-org/GLM-5.3"},"sequence_number":11}
 
                     '
               schema:
@@ -544,7 +544,7 @@ paths:
                       input_tokens: 17
                       output_tokens: 14
                       cache_read_input_tokens: 0
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
         '422':
           description: Unprocessable Entity
           content:
@@ -894,7 +894,7 @@ paths:
                 Example:
                   value:
                     id: cmpl-26a1e10db8544bc3adb488d2d205288b
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
                     object: text_completion
                     choices:
                       - index: 0
@@ -1377,7 +1377,7 @@ paths:
                 Example:
                   value:
                     id: chatcmpl-4b71d12c86d94e719c7e3984a7bb7941
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
                     object: chat.completion
                     choices:
                       - index: 0
@@ -3461,7 +3461,7 @@ paths:
                       input_tokens: 17
                       output_tokens: 14
                       cache_read_input_tokens: 0
-                    model: zai-org/GLM-5.2
+                    model: zai-org/GLM-5.3
         '422':
           description: Unprocessable Entity
           content:
@@ -4164,9 +4164,9 @@ paths:
                 Example:
                   value:
                     data:
-                      - id: zai-org/GLM-5.2
-                        name: zai-org/GLM-5.2
-                        created: 1781491205
+                      - id: zai-org/GLM-5.3
+                        name: zai-org/GLM-5.3
+                        created: 1787929200
                         context_length: 1048576
                         max_completion_tokens: 1048576
                         pricing:
@@ -4181,13 +4181,13 @@ paths:
                           structured_output: true
                           tool_choice: true
                           system_messages: true
-                        description: Open flagship GLM for long-horizon coding agents
-                          and million-token context work
+                        description: Flagship GLM model for long-horizon coding, agents,
+                          and complex project delivery
                         reasoning: true
                         reasoning_options:
-                          - type: toggle
                           - type: effort
                             values:
+                              - low
                               - high
                               - max
                           - type: budget_tokens
@@ -4198,7 +4198,7 @@ paths:
                         output_modalities:
                           - text
                         interleaved: reasoning_content
-                        base_model: zhipuai/glm-5.2
+                        base_model: zhipuai/glm-5.3
                         mode: chat
                         default_params:
                           repetition_penalty: 1
@@ -5725,7 +5725,7 @@ paths:
                     end_time: '2026-07-22T00:00:00Z'
                     results:
                       - product_type: model_apis
-                        model: zai-org/GLM-5.2
+                        model: zai-org/GLM-5.3
                         user_id: user_id_123
                         num_model_requests: 9820
                         input_tokens: 291279167
@@ -9705,7 +9705,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         bad_word_tokens:
           anyOf:
             - items:
@@ -10041,7 +10041,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         bad_word_tokens:
           anyOf:
             - items:
@@ -11707,7 +11707,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         bad_word_tokens:
           anyOf:
             - items:
@@ -12041,7 +12041,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         bad_word_tokens:
           anyOf:
             - items:
@@ -13559,7 +13559,7 @@ components:
         messages:
           - content: Hello, summarize what you can do in one sentence.
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ContainerMessagesStreamBody:
       properties:
         messages:
@@ -13724,7 +13724,7 @@ components:
         messages:
           - content: Hello, summarize what you can do in one sentence.
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ContainerMessagesStreamSuccess:
       properties:
         data:
@@ -18445,13 +18445,13 @@ components:
           description: Model identifier. Pass this as the `model` field in inference
             API requests.
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         name:
           type: string
           title: Name
           description: Display name of the model.
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         created:
           type: integer
           title: Created
@@ -18570,9 +18570,9 @@ components:
             - type: string
             - type: 'null'
           title: Base Model
-          description: Canonical model identifier from models.dev (e.g. `zhipuai/glm-5.2`).
+          description: Canonical model identifier from models.dev (e.g. `zhipuai/glm-5.3`).
           examples:
-            - zhipuai/glm-5.2
+            - zhipuai/glm-5.3
         mode:
           $ref: '#/components/schemas/Mode'
           description: Primary API endpoint type for this model.
@@ -20435,7 +20435,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         messages:
           items:
             $ref: '#/components/schemas/Message'
@@ -20773,7 +20773,7 @@ components:
             role: system
           - content: Hello!
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessChatCompletionStreamBody:
       properties:
         model:
@@ -20781,7 +20781,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         messages:
           items:
             $ref: '#/components/schemas/Message'
@@ -21117,7 +21117,7 @@ components:
             role: system
           - content: Hello!
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessChatCompletionStreamSuccess:
       $ref: '#/components/schemas/StreamedChatResult'
       title: ServerlessChatCompletionStreamSuccess
@@ -21128,7 +21128,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         messages:
           items:
             $ref: '#/components/schemas/Message'
@@ -21174,7 +21174,7 @@ components:
             role: system
           - content: Hello!
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessChatRenderSuccess:
       properties:
         text:
@@ -21208,7 +21208,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         tokens:
           items:
             type: integer
@@ -21229,7 +21229,7 @@ components:
         - tokens
       title: ServerlessDetokenizationBody
       example:
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
         tokens:
           - 128000
           - 3923
@@ -21319,7 +21319,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         system:
           anyOf:
             - anyOf:
@@ -21458,7 +21458,7 @@ components:
         messages:
           - content: Hello, summarize what you can do in one sentence.
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessMessagesStreamBody:
       properties:
         messages:
@@ -21485,7 +21485,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         system:
           anyOf:
             - anyOf:
@@ -21622,7 +21622,7 @@ components:
         messages:
           - content: Hello, summarize what you can do in one sentence.
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessMessagesStreamSuccess:
       properties:
         data:
@@ -21806,7 +21806,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
       additionalProperties: true
       type: object
       required:
@@ -21815,7 +21815,7 @@ components:
       title: ServerlessResponsesBody
       example:
         input: Hello!
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessResponsesStreamBody:
       properties:
         input:
@@ -21917,7 +21917,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
       additionalProperties: true
       type: object
       required:
@@ -21926,7 +21926,7 @@ components:
       title: ServerlessResponsesStreamBody
       example:
         input: Hello!
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
     ServerlessResponsesStreamSuccess:
       properties:
         data:
@@ -22009,7 +22009,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         prompt:
           type: string
           title: Prompt
@@ -22022,7 +22022,7 @@ components:
         - prompt
       title: ServerlessTokenizationBody
       example:
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
         prompt: What is generative AI?
     ServerlessTokenizationSuccess:
       properties:
@@ -22046,7 +22046,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         messages:
           items:
             $ref: '#/components/schemas/Message'
@@ -22364,7 +22364,7 @@ components:
         messages:
           - content: What is 3 + 6?
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
         tools:
           - type: math:calculator
     ServerlessToolAssistedChatCompletionStreamBody:
@@ -22374,7 +22374,7 @@ components:
           title: Model
           description: Code of the model to use. See [available model list](https://friendli.ai/docs/guides/model-apis/pricing#billing-methods).
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         messages:
           items:
             $ref: '#/components/schemas/Message'
@@ -22690,7 +22690,7 @@ components:
         messages:
           - content: What is 3 + 6?
             role: user
-        model: zai-org/GLM-5.2
+        model: zai-org/GLM-5.3
         tools:
           - type: math:calculator
     ServerlessToolAssistedChatCompletionStreamSuccess:
@@ -23479,7 +23479,7 @@ components:
             the grouped usage result. For Model APIs usage, this is the model ID.
             For Dedicated Endpoints usage, this is the endpoint ID.
           examples:
-            - zai-org/GLM-5.2
+            - zai-org/GLM-5.3
         user_id:
           anyOf:
             - type: string
