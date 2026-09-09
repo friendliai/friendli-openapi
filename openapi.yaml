@@ -5820,6 +5820,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: createDataset
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Create a New Dataset
@@ -5948,6 +5949,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: listDatasets
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: List Datasets
@@ -6039,6 +6041,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: getDataset
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Get Dataset Info
@@ -6119,6 +6122,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: deleteDataset
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Delete a Dataset
@@ -6207,6 +6211,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: createVersion
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Create a New Version
@@ -6290,6 +6295,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: listVersions
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: List Versions
@@ -6382,6 +6388,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: getVersion
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Get Version Info
@@ -6470,6 +6477,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: deleteVersion
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Delete a Version
@@ -6558,6 +6566,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: createSplit
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Create a New Split
@@ -6678,6 +6687,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: listSplits
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: List Splits
@@ -6770,6 +6780,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: getSplit
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Get Split Info
@@ -6859,6 +6870,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: deleteSplit
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Delete a Split
@@ -6959,6 +6971,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: addSamples
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Add Samples
@@ -7091,6 +7104,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: listSamples
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: List Samples
@@ -7188,6 +7202,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: updateSamples
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Update Samples
@@ -7290,6 +7305,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: deleteSamples
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Delete Samples
@@ -7374,6 +7390,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: initUpload
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Initiate File Upload
@@ -7455,6 +7472,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: completeUpload
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Complete File Upload
@@ -7550,6 +7568,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: getInfo
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Get File Info
@@ -7639,6 +7658,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       x-speakeasy-name-override: getDownloadUrl
+      x-speakeasy-ignore: true
       x-mint:
         metadata:
           title: Get File Download URL
