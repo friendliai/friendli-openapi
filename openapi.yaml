@@ -15468,7 +15468,15 @@ components:
 
             - 4x NVIDIA B200: `AFoZMFXZnAdD`
 
-            - 8x NVIDIA B200: `drbc6G9FxJWZ`'
+            - 8x NVIDIA B200: `drbc6G9FxJWZ`
+
+            - 1x NVIDIA B300: `b300x1`
+
+            - 2x NVIDIA B300: `b300x2`
+
+            - 4x NVIDIA B300: `b300x4`
+
+            - 8x NVIDIA B300: `b300x8`'
         advanced:
           $ref: '#/components/schemas/EndpointAdvancedConfig'
           title: Advanced
@@ -15756,7 +15764,15 @@ components:
 
             - 4x NVIDIA B200: `AFoZMFXZnAdD`
 
-            - 8x NVIDIA B200: `drbc6G9FxJWZ`'
+            - 8x NVIDIA B200: `drbc6G9FxJWZ
+
+            `- 1x NVIDIA B300: `b300x1`
+
+            - 2x NVIDIA B300: `b300x2`
+
+            - 4x NVIDIA B300: `b300x4`
+
+            - 8x NVIDIA B300: `b300x8`'
       type: object
       title: DedicatedEndpointUpdateBody
       description: Dedicated endpoint update request.
