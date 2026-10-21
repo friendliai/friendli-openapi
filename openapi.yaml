@@ -4141,6 +4141,8 @@ paths:
                 $ref: '#/components/schemas/ServerlessKnowledgeRetrievalSuccess'
         '400':
           description: Bad Request
+        '404':
+          description: Knowledge not found.
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: retrieve
@@ -4286,6 +4288,8 @@ paths:
                     teamName: team-name
         '400':
           description: Bad Request
+        '404':
+          description: Not Found
         '422':
           description: Unprocessable Entity
       x-speakeasy-name-override: wandbArtifactCreate
@@ -4352,6 +4356,8 @@ paths:
                     phase: DOWNLOADING_MODEL
         '400':
           description: Bad Request
+        '404':
+          description: Not Found
         '422':
           description: Unprocessable Entity
         '500':
@@ -4360,14 +4366,17 @@ paths:
       x-mint:
         metadata:
           title: Dedicated Create Endpoint
-          sidebarTitle: Create an Endpoint with Hugging Face Model
+          sidebarTitle: Create an Endpoint
           og:title: Dedicated Create Endpoint
           description: Create a Friendli Dedicated Endpoint deployment for a Hugging
-            Face model via the API. Specify GPU type, replica count, and model configuration.
+            Face or uploaded model via the API. Specify GPU type, replica count, and
+            model configuration.
           og:description: Create a Friendli Dedicated Endpoint deployment for a Hugging
-            Face model via the API. Specify GPU type, replica count, and model configuration.
+            Face or uploaded model via the API. Specify GPU type, replica count, and
+            model configuration.
         href: /openapi/dedicated/endpoint/create
-        content: 'Create a Dedicated Endpoint deployment for a Hugging Face model.
+        content: 'Create a Dedicated Endpoint deployment for a Hugging Face or uploaded
+          model.
 
 
           To request successfully, it is mandatory to enter a **Personal API Key**
@@ -4688,6 +4697,8 @@ paths:
           description: Not Found
         '422':
           description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
       x-speakeasy-name-override: update
       x-mint:
         metadata:
@@ -5558,28 +5569,26 @@ paths:
           schema:
             type: string
             format: date-time
-            description: RFC 3339 timestamp in UTC. Must fall on a 5-minute boundary
-              (e.g., 2026-01-01T10:05:00Z). It must be no earlier than one year ago.
-              When `bucket_width=1h`, it must align to an hour boundary (e.g., `10:00:00Z`);
-              when `bucket_width=1d`, it must align to a day boundary (e.g., `00:00:00Z`).
+            description: 'RFC 3339 timestamp in UTC. Must be within the past 365 days
+              and align with the selected `bucket_width` (e.g., 11:05:00Z for 5m,
+              11:00:00Z for 1h). '
             title: Start Time
-          description: RFC 3339 timestamp in UTC. Must fall on a 5-minute boundary
-            (e.g., 2026-01-01T10:05:00Z). It must be no earlier than one year ago.
-            When `bucket_width=1h`, it must align to an hour boundary (e.g., `10:00:00Z`);
-            when `bucket_width=1d`, it must align to a day boundary (e.g., `00:00:00Z`).
+          description: 'RFC 3339 timestamp in UTC. Must be within the past 365 days
+            and align with the selected `bucket_width` (e.g., 11:05:00Z for 5m, 11:00:00Z
+            for 1h). '
         - name: end_time
           in: query
           required: true
           schema:
             type: string
             format: date-time
-            description: RFC 3339 timestamp in UTC. Must be later than `start_time`
-              and fall on a 5-minute boundary (e.g., 2026-01-01T10:30:00Z). When `bucket_width=1h`
-              or `1d`, it must align to an hour or day boundary, respectively.
+            description: 'RFC 3339 timestamp in UTC. Must be later than `start_time`
+              and align with the selected `bucket_width` (e.g., 11:10:00Z for 5m,
+              12:00:00Z for 1h). '
             title: End Time
-          description: RFC 3339 timestamp in UTC. Must be later than `start_time`
-            and fall on a 5-minute boundary (e.g., 2026-01-01T10:30:00Z). When `bucket_width=1h`
-            or `1d`, it must align to an hour or day boundary, respectively.
+          description: 'RFC 3339 timestamp in UTC. Must be later than `start_time`
+            and align with the selected `bucket_width` (e.g., 11:10:00Z for 5m, 12:00:00Z
+            for 1h). '
         - name: bucket_width
           in: query
           required: false
@@ -5587,12 +5596,13 @@ paths:
             anyOf:
               - $ref: '#/components/schemas/UsageBucketWidth'
               - type: 'null'
-            description: Width of each time bucket in response. Currently `1d`, `1h`,
-              and `5m` are supported, default to `1d`.
+            description: 'Width of each time bucket. Must be selected based on the
+              query duration (end_time - start_time) and must not exceed the query
+              duration. '
             default: 1d
             title: Bucket Width
-          description: Width of each time bucket in response. Currently `1d`, `1h`,
-            and `5m` are supported, default to `1d`.
+          description: 'Width of each time bucket. Must be selected based on the query
+            duration (end_time - start_time) and must not exceed the query duration. '
         - name: limit
           in: query
           required: false
@@ -5600,21 +5610,17 @@ paths:
             anyOf:
               - type: integer
               - type: 'null'
-            description: 'Specifies the number of buckets to return.
-
-              - `bucket_width=1d`: default limit = 7, max limit = 31
-
-              - `bucket_width=1h`: default limit = 24, max limit = 168
-
-              - `bucket_width=5m`: default limit = 12, max limit = 288'
+            description: "Specifies the number of buckets to return.\n\n - `bucket_width=1d`:\
+              \ default 7, max 31\n- `bucket_width=12h`: default 2, max 14\n- `bucket_width=6h`:\
+              \ default 4, max 28\n- `bucket_width=1h`: default 24, max 168\n- `bucket_width=45m`:\
+              \ default 2, max 32\n- `bucket_width=30m`: default 2, max 48\n- `bucket_width=15m`:\
+              \ default 4, max 96\n- `bucket_width=5m`: default 12, max 288\n"
             title: Limit
-          description: 'Specifies the number of buckets to return.
-
-            - `bucket_width=1d`: default limit = 7, max limit = 31
-
-            - `bucket_width=1h`: default limit = 24, max limit = 168
-
-            - `bucket_width=5m`: default limit = 12, max limit = 288'
+          description: "Specifies the number of buckets to return.\n\n - `bucket_width=1d`:\
+            \ default 7, max 31\n- `bucket_width=12h`: default 2, max 14\n- `bucket_width=6h`:\
+            \ default 4, max 28\n- `bucket_width=1h`: default 24, max 168\n- `bucket_width=45m`:\
+            \ default 2, max 32\n- `bucket_width=30m`: default 2, max 48\n- `bucket_width=15m`:\
+            \ default 4, max 96\n- `bucket_width=5m`: default 12, max 288\n"
         - name: page
           in: query
           required: false
@@ -5701,6 +5707,26 @@ paths:
             is given, `gpu_usage` and `reserved_gpu_usage` will be provided if present;
             request, token, and audio usage fields are omitted. Combining `gpu_types`
             with `product_types=model_apis` is rejected with HTTP 400.
+        - name: capacity_types
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: array
+                items:
+                  $ref: '#/components/schemas/CapacityType'
+              - type: 'null'
+            description: Return only usage for the specified capacity types. Supported
+              fields include `reservation` only. When this filter is given, only `reserved_gpu_usage`
+              will be provided; `gpu_usage`, request, token, and audio usage fields
+              are omitted. Combining `capacity_types` with `product_types=model_apis`
+              is rejected with HTTP 400.
+            title: Capacity Types
+          description: Return only usage for the specified capacity types. Supported
+            fields include `reservation` only. When this filter is given, only `reserved_gpu_usage`
+            will be provided; `gpu_usage`, request, token, and audio usage fields
+            are omitted. Combining `capacity_types` with `product_types=model_apis`
+            is rejected with HTTP 400.
         - name: X-Friendli-Team
           in: header
           required: false
@@ -6865,6 +6891,8 @@ paths:
           content:
             application/json:
               schema: {}
+        '404':
+          description: Dataset or split not found.
         '422':
           description: Validation Error
           content:
@@ -8024,6 +8052,12 @@ components:
       required:
         - file
       title: Body_upload_raw_samples
+    CapacityType:
+      type: string
+      enum:
+        - reservation
+      title: CapacityType
+      description: GPU capacity type.
     ChatChoice:
       properties:
         index:
@@ -14236,14 +14270,20 @@ components:
             $ref: '#/components/schemas/CostBucket'
           type: array
           title: Data
+          description: The items in this page.
         has_more:
           type: boolean
           title: Has More
+          description: Whether more items are available beyond this page.
+          examples:
+            - false
         next_page:
           anyOf:
             - type: string
             - type: 'null'
           title: Next Page
+          description: A cursor to fetch the next page. Null when there are no more
+            results.
       type: object
       required:
         - data
@@ -15496,15 +15536,25 @@ components:
           title: Auto Scale Policy
           description: The auto scaling configuration of the endpoint.
         hfModelRepo:
-          type: string
+          anyOf:
+            - type: string
+            - type: 'null'
           title: HF Model Repo
-          description: HF ID of the model.
+          description: Hugging Face model ID (e.g. meta-llama/Llama-3.1-8B-Instruct).
         hfModelRepoRevision:
           anyOf:
             - type: string
             - type: 'null'
           title: HF Model Repo Revision
-          description: HF commit hash of the model.
+          description: HF commit hash or revision of the model (e.g. main). Can only
+            be used when `hfModelRepo` is provided.
+        uploadedModelId:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Uploaded Model ID
+          description: ID of an uploaded model. Cannot be used when `hfModelRepo`
+            is provided.
         initialVersionComment:
           anyOf:
             - type: string
@@ -15517,7 +15567,6 @@ components:
         - name
         - instanceOptionId
         - advanced
-        - hfModelRepo
       title: DedicatedEndpointCreateBody
       description: Dedicated endpoint create request.
     DedicatedEndpointListResponse:
@@ -15713,13 +15762,21 @@ components:
             - type: string
             - type: 'null'
           title: HF Model Repo
-          description: HF ID of the model.
+          description: Hugging Face model ID (e.g. meta-llama/Llama-3.1-8B-Instruct).
         hfModelRepoRevision:
           anyOf:
             - type: string
             - type: 'null'
           title: HF Model Repo Revision
-          description: HF commit hash of the model.
+          description: HF commit hash or revision of the model (e.g. main). Can only
+            be used when `hfModelRepo` is provided.
+        uploadedModelId:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Uploaded Model ID
+          description: ID of an uploaded model. Cannot be used when `hfModelRepo`
+            is provided.
         newVersionComment:
           anyOf:
             - type: string
@@ -23463,9 +23520,14 @@ components:
     UsageBucketWidth:
       type: string
       enum:
-        - 1d
-        - 1h
         - 5m
+        - 15m
+        - 30m
+        - 45m
+        - 1h
+        - 6h
+        - 12h
+        - 1d
       title: UsageBucketWidth
       description: Usage bucket width.
     UsageGroupBy:
@@ -23483,14 +23545,20 @@ components:
             $ref: '#/components/schemas/UsageBucket'
           type: array
           title: Data
+          description: The items in this page.
         has_more:
           type: boolean
           title: Has More
+          description: Whether more items are available beyond this page.
+          examples:
+            - false
         next_page:
           anyOf:
             - type: string
             - type: 'null'
           title: Next Page
+          description: A cursor to fetch the next page. Null when there are no more
+            results.
       type: object
       required:
         - data
@@ -23571,9 +23639,9 @@ components:
               type: object
             - type: 'null'
           title: Gpu Usage
-          description: 'Total GPU time in seconds by GPU type, across both on-demand
+          description: Total GPU time in seconds by GPU type, across both on-demand
             and reserved capacity. Missing keys mean zero. With `group_by=user_id`,
-            usage is attributed to the user who created the endpoint. '
+            usage is attributed to the user who created the endpoint.
           examples:
             - b200: 606
               b300: 844
