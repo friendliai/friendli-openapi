@@ -1,7 +1,9 @@
 name: Auto-merge OpenAPI sync PRs
+
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+
 permissions:
   contents: write
   pull-requests: write
@@ -11,8 +13,8 @@ jobs:
     steps:
       - name: Validate sync PR metadata
         run: |
-          if [ "${{ github.event.pull_request.user.login }}" != "friendli-bot" ]; then
-            echo "PR author must be friendli-bot"
+          if [ "${{ github.event.pull_request.user.type }}" != "Bot" ]; then
+            echo "PR author must be a GitHub App or Actions bot"
             exit 1
           fi
           if [[ ! "${{ github.head_ref }}" =~ ^migrate- ]]; then
