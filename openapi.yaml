@@ -12435,7 +12435,7 @@ components:
         image_url:
           type: string
           title: Image Url
-          description: The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL. 
+          description: The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
       type: object
       required:
         - type
