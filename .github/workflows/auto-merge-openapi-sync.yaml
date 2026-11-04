@@ -9,6 +9,7 @@ permissions:
   pull-requests: write
 jobs:
   validate-sync-pr:
+    if: startsWith(github.head_ref, 'migrate-')
     runs-on: ubuntu-latest
     steps:
       - name: Validate sync PR metadata
