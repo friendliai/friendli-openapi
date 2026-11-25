@@ -9022,19 +9022,19 @@ components:
             - type: integer
             - type: 'null'
           title: Current Replica Count
-          description: The current number of replicas.
+          description: The number of replicas ready to serve inference requests. During an update, this includes previous-version replicas that are still serving.
         desiredReplicaCnt:
           anyOf:
             - type: integer
             - type: 'null'
           title: Desired Replica Count
-          description: The desired number of replicas.
+          description: The number of replicas the endpoint is scaling to right now. The autoscaler sets it from current load, between `autoscalingMin` and `autoscalingMax`.
         updatedReplicaCnt:
           anyOf:
             - type: integer
             - type: 'null'
           title: Updated Replica Count
-          description: The updated number of replicas.
+          description: The number of replicas on the latest version. During an update, this includes new-version replicas that are still starting.
       type: object
       required:
         - name
